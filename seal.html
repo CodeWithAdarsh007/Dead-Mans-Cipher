@@ -1,0 +1,254 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wax Seal — The Great Voyage (Send &amp; Receive Unbroken)</title><link rel="stylesheet" href="css/styles.css">
+<style>
+/* Captain's scroll: rolled shut; on hover the parchment drops OVER the page (no layout shift) */
+.hero-scroll{position:relative; z-index:20; width:min(300px,80vw); margin:0 auto; text-align:center}
+.scroll-roll{position:relative; width:170px; height:56px; margin:6px auto; border-radius:28px;
+  background:repeating-linear-gradient(180deg,#f1e2bd 0 8px,#dcc491 8px 10px);
+  box-shadow:0 8px 22px rgba(0,0,0,.55), inset 0 -10px 14px rgba(122,85,20,.4);
+  transition:all .5s var(--ease2); cursor:pointer}
+.scroll-roll::before,.scroll-roll::after{content:""; position:absolute; top:5px; bottom:5px; width:24px; border-radius:50%;
+  background:radial-gradient(circle at 40% 40%, #e9d6a8, #7a5c28 78%)}
+.scroll-roll::before{left:-9px}.scroll-roll::after{right:-9px}
+.scroll-roll .ribbon{position:absolute; left:50%; top:-7px; bottom:-7px; width:26px; transform:translateX(-50%);
+  background:linear-gradient(180deg,#b32020,#6e0f0f); border-radius:5px; box-shadow:0 2px 6px rgba(0,0,0,.5); transition:opacity .4s}
+.scroll-drop{position:absolute; top:calc(100% - 6px); left:0; right:0; max-height:0; opacity:0; overflow:hidden;
+  transition:max-height .6s var(--ease2), opacity .5s; filter:drop-shadow(0 24px 40px rgba(0,0,0,.65))}
+#msgScroll:hover .scroll-drop{max-height:480px; opacity:1}
+#msgScroll:hover .scroll-roll{width:100%; height:24px; border-radius:12px}
+#msgScroll:hover .scroll-roll .ribbon{opacity:0}
+#msgScroll:hover .scroll-roll::before,#msgScroll:hover .scroll-roll::after{top:2px; bottom:2px; width:18px}
+.scroll-drop .parchment{max-height:320px; text-align:left}
+.scroll-drop .row{display:flex; gap:10px; padding:7px 2px; border-bottom:1px dashed rgba(122,85,20,.4); font-size:13px}
+.scroll-drop .row:last-child{border-bottom:0}
+.scroll-drop .row b{flex:0 0 74px; font-family:'Outfit',sans-serif; font-size:11px; letter-spacing:.14em; color:#7a5c28}
+.scroll-drop .row span{word-break:break-all}
+.scroll-cap{margin-top:10px; font-size:12px; letter-spacing:.3em; color:var(--gold2); font-family:'Outfit',sans-serif; font-weight:700}
+.scroll-cap .mono{font-size:18px; letter-spacing:.08em; display:block; margin-top:2px}
+</style></head><body>
+<div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div>
+<div class="grid"></div><canvas id="stars"></canvas><div id="cursorGlow"></div><div class="noise"></div><div class="vignette"></div></div><div class="map-lines"></div>
+<header class="topbar" id="topbar">
+  <a class="brand" href="index.html" data-link><span class="brand-mark">☠</span><span>DEAD MAN'S <b>CIPHER</b></span></a>
+  <nav class="nav" id="mainNav"><span id="navPill"></span>
+    <a href="index.html" data-link>The Harbor</a><a href="cipher.html" data-link>Secret Signals</a>
+    <a href="stego.html" data-link>Message in a Bottle</a><a href="seal.html" data-link class="active">Wax Seal</a><a href="trials.html" data-link>Signal Lamp</a></nav>
+  <div class="top-right"><div class="live"><i></i><span>LOCAL SESSION</span></div><button class="burger" id="burger">☰</button></div>
+</header>
+<div class="mobile-menu glass hidden" id="mmenu"><a href="index.html">The Harbor</a><a href="cipher.html">Secret Signals</a><a href="stego.html">Message in a Bottle</a><a href="seal.html" class="active">Wax Seal</a><a href="trials.html">Signal Lamp</a></div>
+
+<div class="wrap"><main class="page" id="page">
+  <section class="hero">
+  <div>
+  <div class="eyebrow">☠ Wax Seal deck · A message's full voyage</div>
+  <h1 class="pirate-h" style="font-size:clamp(44px,7vw,84px);line-height:1;margin:14px 0">Send It Whole,<br><span class="gold-h">or Not At All.</span></h1>
+  <p class="fell" style="color:#c3cdda;font-size:18px;font-style:italic;max-width:64ch">Follow one message from the captain's quill to the receiver's hands — locked, wax-sealed, sailed across treacherous seas, then opened <b>provably unbroken</b>. Every step o' real encryption, acted out before yer eyes.</p>
+  </div>
+  <div class="hero-scroll" id="msgScroll" aria-hidden="true">
+    <div class="scroll-roll" title="Hover to unroll"><div class="ribbon"></div></div>
+    <div class="scroll-drop"><div class="parchment">
+      <div class="row"><b>ORDERS</b><span id="scMsg">— quill idle —</span></div>
+      <div class="row"><b>LOCKED</b><span id="scLock">— chest open —</span></div>
+      <div class="row"><b>WAX</b><span id="scWax">— no wax yet —</span></div>
+      <div class="row"><b>STATUS</b><span id="scState">In harbor, awaiting orders.</span></div>
+    </div></div>
+    <div class="scroll-cap">CAPTAIN'S SCROLL<span class="mono">HOVER TO UNROLL</span></div>
+  </div>
+  </section>
+  <div class="divider" aria-hidden="true"><span class="rope"></span><span class="anchor-medal">🗺</span><span class="rope"></span></div>
+
+  <!-- Treasure chart: the six ports of call -->
+  <section class="wood treasure rv" style="padding:26px 24px 20px;margin-top:18px">
+    <span class="nail tl"></span><span class="nail tr"></span><span class="nail bl"></span><span class="nail br"></span>
+    <span class="kicker">☠ THE CAPTAIN'S CHART · SIX PORTS OF CALL</span>
+    <h3 class="pirate-h" style="font-size:30px;margin:6px 0">From Quill to Hands, Unbroken</h3>
+    <div style="margin-top:10px">
+      <span class="port" id="p1">✒ I · Write</span><span class="port" id="p2">🔒 II · Lock (encrypt)</span><span class="port" id="p3">🕯 III · Wax (fingerprint)</span><span class="port" id="p4">🌊 IV · Sail (send)</span><span class="port" id="p5">⚖ V · Verify</span><span class="port" id="p6">📖 VI · Open (decrypt)</span>
+    </div>
+    <div class="route" aria-hidden="true">
+      <span class="harbor">⚓</span>
+      <span id="ship">🚢</span>
+      <span class="island">🏝<small>ISLA CIFRADA</small></span>
+    </div>
+    <div class="mono" id="voyStatus" style="font-size:13px;color:var(--gold2)">⚓ Ship in harbor — write yer orders below, Captain.</div>
+  </section>
+
+  <div class="orders rv">
+    <h4>⚓ SAILOR'S ORDERS — SAIL THE FULL VOYAGE</h4>
+    <ol><li>Write the <b>message</b>, pick a <b>key number</b>, press <b>1 · Lock the chest</b>.</li>
+    <li>Press <b>2 · Melt the wax</b> — the chest gets its fingerprint seal.</li>
+    <li>Tick <b>stormy seas</b> if ye dare, then press <b>3 · Sail!</b> and watch her cross.</li>
+    <li>Press <b>4 · Verify &amp; open</b> — the receiver checks the wax, then unlocks. <b>INTACT</b> or <b>BROKEN</b>, proven.</li></ol>
+  </div>
+
+  <section class="bento">
+    <!-- SENDER'S DESK -->
+    <div class="wood glass card span6 rv" style="padding:24px">
+      <span class="nail tl"></span><span class="nail tr"></span>
+      <span class="kicker">⚓ PORTS I–IV · THE SENDER'S DESK</span>
+      <h3 class="pirate-h" style="font-size:26px">Captain Writes &amp; Sends</h3>
+      <label class="field"><span>I · MESSAGE (plain words)</span><textarea id="vMsg" rows="3" placeholder="e.g. Attack at dawn from the north cove"></textarea></label>
+      <label class="field"><span>II · KEY NUMBER: <b id="vKeyV" class="mono" style="color:var(--gold2)">3</b></span>
+      <input type="range" id="vKey" min="1" max="25" value="3" style="padding:0"></label>
+      <div class="cta-row">
+        <button class="btn btn-gold" id="btnLock" style="padding:11px 16px;font-size:13.5px">1 · 🔒 Lock the chest</button>
+        <button class="btn btn-ghost" id="btnSeal" style="padding:11px 16px;font-size:13.5px" disabled>2 · 🕯 Melt the wax</button>
+      </div>
+      <div class="kicker" style="margin-top:12px">LOCKED CHEST (ciphertext)</div>
+      <div class="parchment" id="vCipher" style="margin-top:8px;max-height:120px">— locked chest awaits —</div>
+      <div class="kicker" style="margin-top:10px">WAX SEAL (fingerprint)</div>
+      <div class="output" id="vFp" style="margin-top:8px;max-height:80px">— no wax yet —</div>
+      <label class="storm-pick"><input type="checkbox" id="stormChk"> ⛈ <span><b>Stormy seas!</b> Let a storm tamper with one letter mid-voyage (to prove the wax catches it).</span></label>
+      <div class="cta-row"><button class="btn btn-gold" id="btnSend" disabled>3 · 🌊 Sail! Send the chest</button>
+      <button class="chip" id="btnReset">↺ New voyage</button></div>
+    </div>
+    <!-- RECEIVER'S DOCK -->
+    <div class="wood glass card span6 rv" style="padding:24px">
+      <span class="nail tl"></span><span class="nail tr"></span>
+      <span class="kicker">🏝 PORTS V–VI · THE RECEIVER'S DOCK</span>
+      <h3 class="pirate-h" style="font-size:26px">Mate Receives &amp; Opens</h3>
+      <div class="kicker">CHEST AS RECEIVED (maybe storm-bitten)</div>
+      <div class="parchment" id="vPack" style="margin-top:8px;max-height:120px">— no ship in sight —</div>
+      <div class="cta-row"><button class="btn btn-gold" id="btnReceive" style="padding:11px 16px;font-size:13.5px" disabled>4 · ⚖ Verify wax &amp; open</button></div>
+      <div class="verdict" id="verdict"></div>
+      <div class="kicker" style="margin-top:12px">MESSAGE IN HANDS</div>
+      <div class="parchment" id="vPlain" style="margin-top:8px">— hands empty —</div>
+      <div class="saythis"><b>Say this:</b> “Encryption is six steps: write → lock with a key → fingerprint the locked chest → send chest plus fingerprint → receiver re-fingerprints and compares → only then unlock. Same fingerprint means untouched; different means tampered — and we never open a broken seal.”</div>
+    </div>
+  </section>
+
+  <section class="wood glass card rv" style="padding:24px;margin-top:16px">
+    <span class="nail tl"></span><span class="nail tr"></span><span class="nail bl"></span><span class="nail br"></span>
+    <span class="kicker">📜 SHIP'S LOG · EVERY STEP, AS IT HAPPENS</span>
+    <div class="shiplog" id="vLog" style="margin-top:10px">Logbook open. Awaiting orders…</div>
+  </section>
+</main></div>
+<footer><span>SEND · RECEIVE · PROVE IT WHOLE</span><span>NO PAYLOADS LEAVE THIS VESSEL</span></footer>
+<script src="js/shell.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+// The crew's tools: slide letters by N (the lock), SHA-256 (the wax)
+function slide(text, n){
+  return text.replace(/[a-z]/gi, ch => {
+    const base = (ch <= 'Z' && ch >= 'A') ? 65 : 97;
+    return String.fromCharCode((ch.charCodeAt(0) - base + n + 26) % 26 + base);
+  });
+}
+async function fingerprint(text){
+  const d = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+  return [...new Uint8Array(d)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+// A storm at sea nicks ONE letter of the chest's contents (tampering!)
+function stormStrike(cipher){
+  const letters = [...cipher.matchAll(/[A-Za-z]/g)];
+  if(!letters.length) return { out: cipher, struck: false };
+  const at = letters[Math.floor(Math.random() * letters.length)].index;
+  const ch = cipher[at], flipped = (ch === 'a' ? 'e' : ch === 'A' ? 'E' : 'a');
+  return { out: cipher.slice(0, at) + flipped + cipher.slice(at + 1), struck: true };
+}
+function log(msg, cls){
+  const box = $('vLog');
+  if(box.dataset.fresh !== 'no'){ box.textContent = ''; box.dataset.fresh = 'no'; }
+  const line = document.createElement('div'); if(cls) line.className = cls; line.textContent = msg;
+  box.appendChild(line); box.scrollTop = box.scrollHeight;
+}
+function port(id, state){ const el = $(id); el.classList.remove('done','broke'); if(state) el.classList.add(state); }
+const keyN = () => parseInt($('vKey').value);
+$('vKey').oninput = e => $('vKeyV').textContent = e.target.value;
+// The chest + wax travelling the seas
+let chest = '', wax = '', landed = '', sailed = false;
+// I–II · Lock the chest (ENCRYPT with the key)
+$('btnLock').onclick = () => {
+  const m = $('vMsg').value.trim();
+  if(!m) return toast('Write yer orders first, Captain');
+  chest = slide(m, keyN());
+  $('vCipher').textContent = chest;
+  port('p1','done'); port('p2','done');
+  log('✒ Port I · Orders written: "' + m + '"', 'wind');
+  log('🔒 Port II · Chest locked with key ' + keyN() + ' → "' + chest + '"', 'wind');
+  $('btnSeal').disabled = false;
+  toast('🔒 Chest locked');
+};
+// III · Melt the wax (FINGERPRINT the locked chest)
+$('btnSeal').onclick = async e => {
+  setLoading(e.currentTarget, true, 'Melting…');
+  wax = await fingerprint(chest);
+  $('vFp').textContent = wax;
+  port('p3','done');
+  log('🕯 Port III · Wax melted over the LOCKED chest: ' + wax.slice(0, 24) + '…', 'wind');
+  setLoading(e.currentTarget, false);
+  $('btnSend').disabled = false;
+  toast('🕯 Wax seal stamped');
+};
+// IV · Sail! The chest + its wax cross the seas (storm may strike)
+$('btnSend').onclick = e => {
+  setLoading(e.currentTarget, true, 'Sailing…');
+  const ship = $('ship'), status = $('voyStatus');
+  ship.style.left = '4%'; void ship.offsetWidth;
+  ship.classList.add('sailing'); ship.style.left = '86%';
+  status.textContent = '🌊 Sailing for Isla Cifrada… hold yer breath.';
+  log('🌊 Port IV · Ship sailed with chest + wax seal…', 'wind');
+  setTimeout(() => {
+    ship.classList.remove('sailing');
+    if($('stormChk').checked){
+      const hit = stormStrike(chest); landed = hit.out;
+      status.textContent = hit.struck ? '⛈ Ship arrived — but a storm mauled her on the way!' : '🌊 Ship arrived (storm found no letters to maul).';
+      log(hit.struck ? '⛈ STORM! One letter nicked mid-voyage. The wax seal, travelling alongside, is unchanged.' : '🌊 Seas calm after all — chest as sent.', hit.struck ? 'bad' : 'good');
+    } else {
+      landed = chest;
+      status.textContent = '🏝 Ship arrived safe in harbor!';
+      log('🌊 Seas calm — chest landed exactly as sent.', 'good');
+    }
+    $('vPack').textContent = landed + '\n— wax travelling with it: ' + wax.slice(0, 32) + '…';
+    port('p4','done'); sailed = true;
+    setLoading(e.currentTarget, false);
+    $('btnReceive').disabled = false;
+    toast('🏝 Chest landed — receiver, do yer duty');
+  }, 2700);
+};
+// V–VI · Receiver re-fingerprints, compares (VERIFY), then unlocks (DECRYPT)
+$('btnReceive').onclick = async e => {
+  if(!sailed) return;
+  setLoading(e.currentTarget, true, 'Inspecting…');
+  const fresh = await fingerprint(landed);
+  const whole = fresh === wax;
+  const v = $('verdict'); v.classList.remove('show','intact','broken'); void v.offsetWidth;
+  if(whole){
+    const opened = slide(landed, 26 - keyN());
+    v.className = 'verdict show intact'; v.textContent = '☠ VERIFIED WHOLE — wax unbroken. Chest opened.';
+    $('vPlain').textContent = opened;
+    port('p5','done'); port('p6','done');
+    log('⚖ Port V · Wax VERIFIED — fingerprints match letter for letter.', 'good');
+    log('📖 Port VI · Chest opened with key ' + keyN() + ': "' + opened + '" — EXACTLY as written.', 'good');
+    $('voyStatus').textContent = '☠ Delivered whole. The captain buys ye a rum.';
+  } else {
+    v.className = 'verdict show broken'; v.textContent = '✕ WAX BROKEN — tampered at sea! Chest stays shut.';
+    $('vPlain').textContent = '(unopened — a broken seal is never trusted)';
+    port('p5','broke');
+    log('⚖ Port V · Wax BROKEN! Landed fingerprint differs — the chest was mauled.', 'bad');
+    log('🔒 Port VI · Chest stays SHUT. Receiver refuses the cargo.', 'bad');
+    $('voyStatus').textContent = '✕ Treachery detected! The wax caught it.';
+  }
+  setLoading(e.currentTarget, false);
+};
+// New voyage: scrub the decks
+$('btnReset').onclick = () => {
+  chest = wax = landed = ''; sailed = false;
+  ['vMsg'].forEach(id => $(id).value = '');
+  $('vCipher').textContent = '— locked chest awaits —'; $('vFp').textContent = '— no wax yet —';
+  $('vPack').textContent = '— no ship in sight —'; $('vPlain').textContent = '— hands empty —';
+  const v = $('verdict'); v.className = 'verdict';
+  ['p1','p2','p3','p4','p5','p6'].forEach(p => port(p, null));
+  $('btnSeal').disabled = true; $('btnSend').disabled = true; $('btnReceive').disabled = true;
+  $('ship').style.left = '4%'; $('voyStatus').textContent = '⚓ Ship in harbor — write yer orders below, Captain.';
+  const box = $('vLog'); box.dataset.fresh = 'yes'; box.textContent = 'Logbook open. Awaiting orders…';
+  toast('↺ Decks scrubbed — new voyage ready');
+};
+// Captain's scroll: fill it with the live voyage the moment it is unrolled
+$('msgScroll').addEventListener('mouseenter', () => {
+  $('scMsg').textContent = $('vMsg').value.trim() || '— quill idle —';
+  $('scLock').textContent = chest || '— chest open —';
+  $('scWax').textContent = wax ? wax.slice(0, 40) + '…' : '— no wax yet —';
+  $('scState').textContent = $('voyStatus').textContent;
+});
+</script></body></html>
