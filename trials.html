@@ -1,0 +1,128 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Signal Lamp — Morse Code</title><link rel="stylesheet" href="css/styles.css">
+<style>
+/* Hanging ship's lantern: dark until hovered, then it glows alive */
+.lantern-stage{width:min(250px,62vw); margin:0 auto; text-align:center; animation:sway2 5.5s ease-in-out infinite}
+@keyframes sway2{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+.lantern{position:relative; width:130px; margin:0 auto; cursor:pointer}
+.chain{width:6px; height:56px; margin:0 auto; border-radius:3px;
+  background:repeating-linear-gradient(180deg,#8a6f3a 0 5px,#3a2f16 5px 10px)}
+.cap{width:86px; height:22px; margin:0 auto; border-radius:10px 10px 4px 4px;
+  background:linear-gradient(180deg,#9a7d42,#4a3a1c); box-shadow:0 3px 8px rgba(0,0,0,.5)}
+.glass-chamber{position:relative; width:98px; height:122px; margin:-2px auto 0; overflow:hidden;
+  border-radius:16px 16px 24px 24px; border:2px solid rgba(200,180,130,.6);
+  background:linear-gradient(180deg,rgba(60,55,40,.35),rgba(20,18,12,.6))}
+.flame{position:absolute; left:50%; bottom:18px; width:34px; height:52px; transform:translateX(-50%);
+  border-radius:50% 50% 50% 50%/62% 62% 38% 38%;
+  background:radial-gradient(circle at 50% 70%,#fff6c9,#e8a33a 55%,#8e3a10 100%);
+  opacity:.12; filter:grayscale(.8); transition:opacity .45s, filter .45s, box-shadow .45s}
+.lantern:hover .flame{opacity:1; filter:none; box-shadow:0 0 34px rgba(255,190,80,.95); animation:flick 1.2s ease-in-out infinite}
+@keyframes flick{0%,100%{transform:translateX(-50%) scaleY(1)}50%{transform:translateX(-50%) scaleY(1.07)}}
+.halo{position:absolute; left:50%; top:48%; width:240px; height:240px; transform:translate(-50%,-50%);
+  border-radius:50%; background:radial-gradient(circle,rgba(255,196,90,.42),transparent 65%);
+  opacity:0; transition:opacity .5s; pointer-events:none}
+.lantern:hover .halo{opacity:1}
+.base{width:106px; height:18px; margin:-2px auto 0; border-radius:6px 6px 10px 10px;
+  background:linear-gradient(180deg,#8a6f3a,#3a2f16); box-shadow:0 4px 10px rgba(0,0,0,.5)}
+.lantern-state{margin-top:12px; font-size:12px; letter-spacing:.3em; color:var(--gold2); font-family:'Outfit',sans-serif; font-weight:700}
+.lantern-state .mono{font-size:19px; letter-spacing:.08em; display:block; margin-top:2px}
+.lantern-state .st-on{display:none; color:#ffd98a}
+.lantern-stage:hover .st-on{display:block}
+.lantern-stage:hover .st-off{display:none}
+</style></head><body>
+<div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div>
+<div class="grid"></div><canvas id="stars"></canvas><div id="cursorGlow"></div><div class="noise"></div><div class="vignette"></div></div><div class="map-lines"></div>
+<header class="topbar" id="topbar">
+  <a class="brand" href="index.html" data-link><span class="brand-mark">☠</span><span>DEAD MAN'S <b>CIPHER</b></span></a>
+  <nav class="nav" id="mainNav"><span id="navPill"></span>
+    <a href="index.html" data-link>The Harbor</a><a href="cipher.html" data-link>Secret Signals</a>
+    <a href="stego.html" data-link>Message in a Bottle</a><a href="seal.html" data-link>Wax Seal</a><a href="trials.html" data-link class="active">Signal Lamp</a></nav>
+  <div class="top-right"><div class="live"><i></i><span>LOCAL SESSION</span></div><button class="burger" id="burger">☰</button></div>
+</header>
+<div class="mobile-menu glass hidden" id="mmenu"><a href="index.html">The Harbor</a><a href="cipher.html">Secret Signals</a><a href="stego.html">Message in a Bottle</a><a href="seal.html">Wax Seal</a><a href="trials.html" class="active">Signal Lamp</a></div>
+
+<div class="wrap"><main class="page" id="page">
+  <section class="hero">
+  <div>
+  <div class="eyebrow">☠ Lamp deck · Talk in dots and dashes</div>
+  <h1 class="pirate-h" style="font-size:clamp(44px,7vw,80px);line-height:1;margin:14px 0">Flash the lamp.<br><span class="gold-h">Speak in dots.</span></h1>
+  <p class="pirate-lead" style="max-width:62ch">Before radio, sailors talked ship-to-ship by flashin' a lamp — short blinks and long blinks, one pattern per letter. Type words, get the blink-code, and watch our brass lamp flash it.</p>
+  </div>
+  <div class="lantern-stage" aria-hidden="true">
+    <div class="lantern" title="Hover to light the lantern">
+      <div class="chain"></div><div class="cap"></div>
+      <div class="glass-chamber"><div class="flame"></div></div>
+      <div class="base"></div><div class="halo"></div>
+    </div>
+    <div class="lantern-state">SHIP'S LANTERN<span class="mono st-off">UNLIT — HOVER ME</span><span class="mono st-on">LIT 🔥</span></div>
+  </div>
+  </section>
+  <div class="divider" aria-hidden="true"><span class="rope"></span><span class="anchor-medal">💡</span><span class="rope"></span></div>
+
+  <div class="orders rv">
+    <h4>⚓ SAILOR'S ORDERS — HOW TO WORK THIS DECK</h4>
+    <ol><li><b>Type words</b> (e.g. SOS) and press <b>To blink-code</b>.</li>
+    <li>Press <b>Flash the lamp</b> — short glow = dot, long glow = dash.</li>
+    <li>Paste any blink-code below and press <b>Read it back</b> to get words again.</li></ol>
+  </div>
+
+  <section class="bento">
+    <div class="wood glass card span6 rv"><span class="nail tl"></span><span class="nail tr"></span>
+      <span class="kicker">OUTGOING SIGNAL · WORDS → BLINKS</span><h3 class="pirate-h" style="font-size:26px">The brass lamp</h3>
+      <div class="lamp" id="lamp">💡</div>
+      <label class="field"><span>YOUR WORDS (letters + numbers)</span><input type="text" id="mTxt" value="SOS" maxlength="120"></label>
+      <div class="cta-row"><button class="btn btn-gold" id="mEnc" style="padding:11px 18px;font-size:13.5px">💡 To blink-code</button><button class="btn btn-ghost" id="mFlash" style="padding:11px 18px;font-size:13.5px">🔦 Flash the lamp</button></div>
+      <div class="kicker" style="margin-top:12px">BLINK-CODE</div>
+      <div class="parchment" id="mOut" style="margin-top:8px">··· −−− ···</div>
+      <div class="toolbar"><button class="chip" id="mCopy">⧉ copy blink-code</button></div>
+    </div>
+    <div class="wood glass card span6 rv"><span class="nail tl"></span><span class="nail tr"></span>
+      <span class="kicker">INCOMING SIGNAL · BLINKS → WORDS</span><h3 class="pirate-h" style="font-size:26px">Read the flashes</h3>
+      <label class="field"><span>BLINK-CODE (dots . dashes −, letters spaced, words with / )</span><textarea id="mCode" rows="4" placeholder="e.g. ··· −−− ···   (or ... --- ... )"></textarea></label>
+      <div class="cta-row"><button class="btn btn-ghost" id="mDec" style="padding:11px 18px;font-size:13.5px">📖 Read it back</button><button class="chip" id="mUse">↩ use blink-code above</button></div>
+      <div class="kicker" style="margin-top:12px">WORDS</div>
+      <div class="parchment" id="mTxt2" style="margin-top:8px">Words will wash up here…</div>
+      <div class="saythis"><b>Say this:</b> “Each letter has a fixed pattern of short and long flashes — A is dot-dash, B is dash-dot-dot-dot. SOS, the distress call, is dot-dot-dot, dash-dash-dash, dot-dot-dot — impossible to mistake in a storm.”</div>
+    </div>
+  </section>
+</main></div>
+<footer><span>☠ SIGNAL LAMP · MORSE CODE · DONE ABOARD</span><span>NO PAYLOADS LEAVE THIS VESSEL</span></footer>
+<script src="js/shell.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+// The sailor's alphabet: every letter/number = a pattern of dots and dashes
+const CODE = {A:'.-',B:'-...',C:'-.-.',D:'-..',E:'.',F:'..-.',G:'--.',H:'....',I:'..',J:'.---',K:'-.-',L:'.-..',M:'--',N:'-.',O:'---',P:'.--.',Q:'--.-',R:'.-.',S:'...',T:'-',U:'..-',V:'...-',W:'.--',X:'-..-',Y:'-.--',Z:'--..','0':'-----','1':'.----','2':'..---','3':'...--','4':'....-','5':'.....','6':'-....','7':'--...','8':'---..','9':'----.'};
+const BACK = {}; for(const k in CODE) BACK[CODE[k]] = k;
+// Words → blink-code (letters spaced, words split by /)
+function toMorse(t){ return t.toUpperCase().split(' ').map(w => [...w].map(c => CODE[c] || '').filter(Boolean).join(' ')).filter(Boolean).join('  /  '); }
+// Blink-code → words (accepts ·− pretty marks too)
+function fromMorse(t){
+  t = t.replace(/[·•]/g, '.').replace(/[−–—]/g, '-');
+  return t.split('/').map(w => w.trim().split(/\s+/).map(p => BACK[p] || '?').join('')).join(' ');
+}
+$('mEnc').onclick = () => {
+  if(!$('mTxt').value.trim()) return toast('Type some words first, sailor');
+  $('mOut').textContent = toMorse($('mTxt').value) || '(no signal letters found)';
+};
+$('mUse').onclick = () => { $('mCode').value = $('mOut').textContent; toast('Blink-code loaded below — now Read it back'); };
+$('mDec').onclick = () => {
+  if(!$('mCode').value.trim()) return toast('Paste some blink-code first');
+  $('mTxt2').textContent = fromMorse($('mCode').value); toast('📖 Signal read');
+};
+$('mCopy').onclick = () => copyText($('mOut').textContent, 'Blink-code copied');
+// Flash the lamp: dot = short glow, dash = long glow
+const wait = ms => new Promise(r => setTimeout(r, ms));
+let flashing = false;
+$('mFlash').onclick = async e => {
+  if(flashing) return toast('Lamp is already flashing…');
+  const seq = ($('mOut').textContent || '').replace(/[^.\-]/g, '');
+  if(!seq) return toast('Make some blink-code first');
+  flashing = true; setLoading(e.currentTarget, true, 'Flashing…');
+  const lamp = $('lamp'), unit = 200;
+  for(const s of seq){
+    lamp.classList.add('on'); await wait(s === '.' ? unit : unit * 3);
+    lamp.classList.remove('on'); await wait(unit);
+  }
+  flashing = false; setLoading(e.currentTarget, false); toast('🔦 Signal flashed');
+};
+</script></body></html>

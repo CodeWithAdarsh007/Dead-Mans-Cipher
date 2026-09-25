@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dead Man's Cipher — The Harbor</title><meta name="description" content="A sailor's secret-keeping toolkit. Fully on your device.">
+<link rel="stylesheet" href="css/styles.css">
+<style>
+/* Real mariner's compass: knurled brass bezel, engraved cream face, live needle */
+.mariner{width:min(400px,86vw); margin:0 auto; text-align:center; animation:float 7s ease-in-out infinite}
+.mariner:hover #needleSpin{animation:needlespin 1.6s linear infinite; cursor:pointer}
+@keyframes needlespin{to{transform:rotate(360deg)}}
+.bezel{position:relative; width:100%; aspect-ratio:1/1; border-radius:50%;
+  background:repeating-conic-gradient(from 0deg,#7a6234 0 5deg,#463714 5deg 10deg);
+  box-shadow:0 30px 70px rgba(0,0,0,.7), inset 0 2px 6px rgba(255,240,200,.5), inset 0 -5px 12px rgba(0,0,0,.65);
+  padding:5.5%}
+.bezel-face{position:relative; width:100%; height:100%; border-radius:50%; overflow:hidden;
+  background:radial-gradient(circle at 50% 36%, #f6ecd2 0%, #e4d4a9 46%, #b49b62 78%, #6e5a30 100%);
+  box-shadow:inset 0 0 34px rgba(60,40,10,.6), inset 0 5px 14px rgba(0,0,0,.35), 0 0 0 2px #241c0e}
+#rose{position:absolute; inset:0; width:100%; height:100%}
+#needleSpin{position:absolute; inset:0; transition:transform 1.6s cubic-bezier(.3,1.3,.4,1)}
+.pin{position:absolute; left:50%; top:7%; bottom:7%; width:26px; transform:translateX(-50%);
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.5))}
+.pin i{position:absolute; left:0; right:0; display:block}
+.pin .nn{top:0; height:50%; background:linear-gradient(180deg,#c02020,#5e0a0a); clip-path:polygon(50% 0,100% 100%,0 100%)}
+.pin .ss{bottom:0; height:50%; background:linear-gradient(0deg,#3c3c40,#ddd6c4); clip-path:polygon(0 0,100% 0,50% 100%)}
+.pivot{position:absolute; left:50%; top:50%; width:26px; height:26px; transform:translate(-50%,-50%);
+  border-radius:50%; background:radial-gradient(circle at 35% 30%,#ffefa8,#9a6b1e 70%);
+  box-shadow:0 2px 6px rgba(0,0,0,.65)}
+.glare{position:absolute; inset:0; border-radius:50%; pointer-events:none;
+  background:linear-gradient(135deg,rgba(255,255,255,.3) 0%,transparent 34%)}
+.heading{margin-top:12px; font-size:12px; letter-spacing:.32em; color:var(--gold2); font-family:'Outfit',sans-serif; font-weight:700}
+.heading .mono{font-size:21px; letter-spacing:.08em; display:block; margin-top:2px}
+</style></head><body>
+<div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div>
+<div class="grid"></div><canvas id="stars"></canvas><div id="cursorGlow"></div><div class="noise"></div><div class="vignette"></div></div>
+<div class="map-lines"></div>
+
+<header class="topbar" id="topbar">
+  <a class="brand" href="index.html" data-link><span class="brand-mark">☠</span><span>DEAD MAN'S <b>CIPHER</b></span></a>
+  <nav class="nav" id="mainNav"><span id="navPill"></span>
+    <a href="index.html" data-link class="active">The Harbor</a>
+    <a href="cipher.html" data-link>Secret Signals</a>
+    <a href="stego.html" data-link>Message in a Bottle</a>
+    <a href="seal.html" data-link>Wax Seal</a>
+    <a href="trials.html" data-link>Signal Lamp</a>
+  </nav>
+  <div class="top-right"><div class="live"><i></i><span>LOCAL SESSION</span></div>
+  <button class="burger" id="burger" aria-label="Menu">☰</button></div>
+</header>
+<div class="mobile-menu glass hidden" id="mmenu">
+  <a href="index.html" class="active">The Harbor</a><a href="cipher.html">Secret Signals</a>
+  <a href="stego.html">Message in a Bottle</a><a href="seal.html">Wax Seal</a><a href="trials.html">Signal Lamp</a>
+</div>
+
+<div class="wrap"><main class="page" id="page">
+  <section class="hero">
+    <div>
+      <div class="eyebrow">☠ A sailor's secret-keeping toolkit · 100% on yer device</div>
+      <h1 class="pirate-h" style="font-size:clamp(46px,7vw,86px);line-height:1;margin:14px 0">Command the seas.<br><span class="gold-h">Bury every secret.</span></h1>
+      <p class="pirate-lead">Four simple tricks o' the trade: scramble words with <b>Secret Signals</b>, cork notes inside <b>photos</b> like messages in a bottle, fingerprint cargo with a <b>Wax Seal</b>, and talk ship-to-ship with the <b>Signal Lamp</b>. No accounts, no servers — all done aboard this page.</p>
+      <div class="cta-row">
+        <a class="btn btn-gold" href="cipher.html" data-link>🚩 Scramble words →</a>
+        <a class="btn btn-ghost" href="stego.html" data-link>Hide a note in a photo</a>
+      </div>
+      <div class="toolbar" style="margin-top:14px">
+        <span class="chip">🚩 Flag Code</span><span class="chip">🗝 Secret keyword</span><span class="chip">🍾 Text in image</span><span class="chip">🕯 Fingerprint</span><span class="chip">💡 Morse lamp</span>
+      </div>
+    </div>
+    <div class="ship-stage" aria-hidden="true">
+      <div class="mariner" title="Hover to swing the needle">
+        <div class="bezel"><div class="bezel-face">
+          <svg id="rose" viewBox="0 0 300 300"></svg>
+          <div id="needleSpin"><div class="pin"><i class="nn"></i><i class="ss"></i></div></div>
+          <div class="pivot"></div><div class="glare"></div>
+        </div></div>
+        <div class="heading">SHIP'S HEADING<span class="mono" id="hdg">042°</span></div>
+      </div>
+      <div class="float-card f1"><b>HULL INTEGRITY</b><span class="mono" id="hull">98.2%</span><div class="bar"><i data-w="98%"></i></div></div>
+      <div class="float-card f2"><b>DOUBLOONS SECURED</b><span class="mono"><span data-count="12840">0</span> ⛁</span></div>
+      <div class="float-card f3"><b>SEA &amp; WIND</b><div style="font-size:24px">🌊</div><div style="font-size:11px;color:var(--muted)" id="wind">Wind NE · 14kn</div></div>
+    </div>
+  </section>
+
+  <div class="divider" aria-hidden="true"><span class="rope"></span><span class="anchor-medal">⚓</span><span class="rope"></span></div>
+
+  <div class="orders rv">
+    <h4>⚓ CAPTAIN'S ORDERS — WHERE TO, SAILOR?</h4>
+    <ol><li>New aboard? Start at <b>Secret Signals</b> — scramble a word in ten seconds.</li>
+    <li>Got a photo? <b>Message in a Bottle</b> hides a note inside it.</li>
+    <li>Carrying cargo? <b>Wax Seal</b> sails it from sender to receiver, provably unbroken.</li>
+    <li>Night watch? Flash the <b>Signal Lamp</b> in blink-code.</li></ol>
+  </div>
+
+  <section class="bento">
+    <div class="wood glass card span3 rv"><span class="nail tl"></span><span class="nail tr"></span><span class="kicker">SIGNALS SCRAMBLED</span><div class="stat-num" data-count="3421">0</div><p>Messages scrambled this voyage.</p><div class="bar"><i data-w="82%"></i></div></div>
+    <div class="wood glass card span3 rv"><span class="nail tl"></span><span class="nail tr"></span><span class="kicker">BOTTLES CORKED</span><div class="stat-num" data-count="817">0</div><p>Notes hidden inside photos.</p><div class="bar"><i data-w="64%"></i></div></div>
+    <div class="wood glass card span3 rv"><span class="nail tl"></span><span class="nail tr"></span><span class="kicker">SEALS STAMPED</span><div class="stat-num" data-count="1204">0</div><p>Cargo notes fingerprinted.</p><div class="bar"><i data-w="91%"></i></div></div>
+    <div class="wood glass card span3 rv"><span class="nail tl"></span><span class="nail tr"></span><span class="kicker">LAMPS FLASHED</span><div class="stat-num" data-count="96">0</div><p>Blink-code signals flashed.</p><div class="bar"><i data-w="47%"></i></div></div>
+    <div class="wood glass card span8 rv"><span class="nail tl"></span><span class="nail tr"></span>
+      <span class="kicker">SHIP'S CLOCK · HARBOR OF TORTUGA</span>
+      <h3 class="pirate-h mono" id="clock" style="font-size:34px">--:--:--</h3>
+      <p>All operations are stamped to local time only. Nothing leaves this ship. <span class="mono" id="coords">18.4663° N · 77.1336° W</span></p>
+      <div class="toolbar"><button class="chip" id="shanty">▶ Play sea ambience (WebAudio)</button><button class="chip" id="foghorn">🔔 Foghorn</button></div>
+    </div>
+    <div class="wood glass card span4 rv"><span class="nail tl"></span><span class="nail tr"></span>
+      <span class="kicker">FLEET READINESS</span><h3 class="pirate-h" style="font-size:24px">Quarterdeck status</h3>
+      <p>Cannons <b style="color:var(--gold2)">ready</b> · Sails <b style="color:var(--sea)">full</b> · Lanterns <b style="color:var(--gold2)">lit</b></p>
+      <div class="bar"><i data-w="88%"></i></div>
+      <div class="cta-row"><a class="btn btn-ghost" href="seal.html" data-link style="padding:10px 16px;font-size:13px">Sail the Wax Voyage</a></div>
+    </div>
+  </section>
+
+  <section class="bento">
+    <div class="wood glass card span6 rv"><span class="nail tl"></span><span class="nail tr"></span>
+      <span class="kicker">CAPTAIN'S LOG · SAVED ON THIS SHIP</span><h3 class="pirate-h" style="font-size:26px">Logbook</h3>
+      <div class="grid2"><input type="text" id="logInput" placeholder="e.g. Spotted frigate at dawn…"><button class="btn btn-gold" id="logAdd" style="padding:12px">＋ Add entry</button></div>
+      <div id="logList"></div>
+    </div>
+    <div class="wood glass card span6 rv"><span class="nail tl"></span><span class="nail tr"></span>
+      <span class="kicker">VOYAGE PLAN</span><h3 class="pirate-h" style="font-size:26px">The route to Isla Cifrada</h3>
+      <div class="timeline">
+        <div class="tl-item"><b>I · Tortuga</b> — Muster crew, scramble orders with <a href="cipher.html" data-link style="color:var(--gold2)">Secret Signals</a>.</div>
+        <div class="tl-item"><b>II · Open water</b> — Cork a secret note inside a photo in a <a href="stego.html" data-link style="color:var(--gold2)">Message in a Bottle</a>.</div>
+        <div class="tl-item"><b>III · Isla Cifrada</b> — Fingerprint the cargo with the <a href="seal.html" data-link style="color:var(--gold2)">Wax Seal</a>.</div>
+        <div class="tl-item"><b>IV · Night watch</b> — Flash blink-code with the <a href="trials.html" data-link style="color:var(--gold2)">Signal Lamp</a>.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bento">
+    <div class="wood glass card span3 rv"><span class="nail tl"></span><span class="nail tr"></span><span class="kicker">🚩 TEXT</span><h3 class="pirate-h" style="font-size:24px">Secret Signals</h3><p>Scramble words with a number or a keyword. Read them back with the same key.</p><div class="cta-row"><a class="btn btn-gold" data-link href="cipher.html" style="padding:10px 16px;font-size:13px">Enter →</a></div></div>
+    <div class="wood glass card span3 rv"><span class="nail tl"></span><span class="nail tr"></span><span class="kicker">🍾 PHOTO</span><h3 class="pirate-h" style="font-size:24px">Message in a Bottle</h3><p>Tuck a secret note invisibly inside a picture. Pull it back out anytime.</p><div class="cta-row"><a class="btn btn-gold" data-link href="stego.html" style="padding:10px 16px;font-size:13px">Enter →</a></div></div>
+    <div class="wood glass card span3 rv"><span class="nail tl"></span><span class="nail tr"></span><span class="kicker">🕯 SEAL</span><h3 class="pirate-h" style="font-size:24px">Wax Seal</h3><p>Sail a message sender-to-receiver through every encryption step, provably whole.</p><div class="cta-row"><a class="btn btn-ghost" data-link href="seal.html" style="padding:10px 16px;font-size:13px">Enter →</a></div></div>
+    <div class="wood glass card span3 rv"><span class="nail tl"></span><span class="nail tr"></span><span class="kicker">💡 LAMP</span><h3 class="pirate-h" style="font-size:24px">Signal Lamp</h3><p>Turn words into sailor blink-code and flash the brass lamp.</p><div class="cta-row"><a class="btn btn-ghost" data-link href="trials.html" style="padding:10px 16px;font-size:13px">Enter →</a></div></div>
+  </section>
+</main></div>
+<footer><span>☠ DEAD MAN'S CIPHER · SAILOR'S TOOLKIT</span><span>NO PAYLOADS LEAVE THIS VESSEL</span></footer>
+<script src="js/shell.js"></script>
+<script>
+// Harbor-only: clock, compass drift, logbook (localStorage), WebAudio sea + foghorn
+const clock=document.getElementById('clock');
+setInterval(()=>{clock.textContent=new Date().toLocaleTimeString();},1000); clock.textContent=new Date().toLocaleTimeString();
+// Real compass: engrave the rose (ticks, degrees, star), then swing the live needle
+(function(){
+  const NS='http://www.w3.org/2000/svg', rose=document.getElementById('rose');
+  const P=(r,d)=>{const a=d*Math.PI/180; return [150+r*Math.sin(a), 150-r*Math.cos(a)];};
+  const line=(x1,y1,x2,y2,w,op)=>{const l=document.createElementNS(NS,'line');
+    l.setAttribute('x1',x1);l.setAttribute('y1',y1);l.setAttribute('x2',x2);l.setAttribute('y2',y2);
+    l.setAttribute('stroke','#3a2c12');l.setAttribute('stroke-width',w);l.setAttribute('opacity',op||1);rose.appendChild(l);};
+  for(let d=0;d<360;d+=3){ // 120 engraved ticks
+    const card=d%90===0, mid=d%30===0, sm=d%15===0;
+    const a=P(card?112:mid?118:sm?124:129,d), b=P(138,d);
+    line(a[0].toFixed(1),a[1].toFixed(1),b[0].toFixed(1),b[1].toFixed(1),card?3.5:mid?2.2:1.1);
+  }
+  const ring=document.createElementNS(NS,'circle'); // hairline chapter ring
+  ring.setAttribute('cx',150);ring.setAttribute('cy',150);ring.setAttribute('r',96);
+  ring.setAttribute('fill','none');ring.setAttribute('stroke','#3a2c12');ring.setAttribute('stroke-width','1');rose.appendChild(ring);
+  const txt=(x,y,s,size,fill,anchor)=>{const t=document.createElementNS(NS,'text');
+    t.setAttribute('x',x);t.setAttribute('y',y);t.setAttribute('text-anchor',anchor||'middle');
+    t.setAttribute('dominant-baseline','central');t.setAttribute('font-size',size);
+    t.setAttribute('font-family','Cinzel,serif');t.setAttribute('font-weight','700');
+    t.setAttribute('fill',fill||'#3a2c12');t.textContent=s;rose.appendChild(t);};
+  for(let d=30;d<360;d+=30){const p=P(82,d); txt(p[0].toFixed(1),p[1].toFixed(1),d,12);} // degrees
+  const N=P(58,0),E=P(58,90),S=P(58,180),W=P(58,270);
+  txt(N[0],N[1],'N',30,'#a31616');txt(E[0],E[1],'E',24);txt(S[0],S[1],'S',24);txt(W[0],W[1],'W',24);
+  [[45,'NE'],[135,'SE'],[225,'SW'],[315,'NW']].forEach(([d,s])=>{const p=P(60,d);txt(p[0].toFixed(1),p[1].toFixed(1),s,13);});
+  let star=''; // 8-point rose star, alternating ink and oxblood
+  for(let k=0;k<16;k++){const r=k%2===0?52:13,p=P(r,k*22.5);star+=p[0].toFixed(1)+','+p[1].toFixed(1)+' ';}
+  const pg=document.createElementNS(NS,'polygon');
+  pg.setAttribute('points',star);pg.setAttribute('fill','#7a6234');pg.setAttribute('opacity','.55');rose.appendChild(pg);
+  // live heading: slow random walk, needle follows, wind backs along
+  const dirs=['N','NE','E','SE','S','SW','W','NW']; let di=1, hdg=42;
+  const spin=document.getElementById('needleSpin'), hdgEl=document.getElementById('hdg');
+  setInterval(()=>{
+    hdg=(hdg+(Math.random()*12-6)+360)%360;
+    spin.style.transform='rotate('+hdg.toFixed(1)+'deg)';
+    hdgEl.textContent=String(Math.round(hdg)).padStart(3,'0')+'°';
+    di=(di+1)%8;
+    document.getElementById('wind').textContent='Wind '+dirs[di]+' · '+(10+Math.floor(Math.random()*12))+'kn';
+  },4000);
+})();
+// logbook
+const K='dmc_log', list=document.getElementById('logList'), inp=document.getElementById('logInput');
+function load(){try{return JSON.parse(localStorage.getItem(K))||[]}catch{return[]}}
+function save(v){localStorage.setItem(K,JSON.stringify(v))}
+function render(){const v=load(); list.innerHTML=v.length?v.map((t,i)=>`<div class="log-item">📜 ${t}<button data-i="${i}" aria-label="delete">✕</button></div>`).join(''):'<p style="color:var(--muted);font-size:14px">No entries yet. The page is blank, Captain.</p>';
+  list.querySelectorAll('button').forEach(b=>b.onclick=()=>{const a=load();a.splice(+b.dataset.i,1);save(a);render();});}
+document.getElementById('logAdd').onclick=()=>{if(!inp.value.trim())return toast('Write something first, Captain');const a=load();a.unshift(new Date().toLocaleString()+' — '+inp.value.trim());save(a);inp.value='';render();toast('Logged in the ship\'s book');};
+render();
+// WebAudio sea + foghorn (no assets needed)
+let AC=null;
+document.getElementById('shanty').onclick=e=>{AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+  const o=AC.createOscillator(),g=AC.createGain();o.type='sine';o.frequency.value=110;g.gain.value=.05;
+  const lfo=AC.createOscillator(),lg=AC.createGain();lfo.frequency.value=.15;lg.gain.value=.03;lfo.connect(lg);lg.connect(g.gain);
+  o.connect(g);g.connect(AC.destination);o.start();lfo.start();setTimeout(()=>{o.stop();lfo.stop();},6000);toast('🌊 Sea ambience… (6s synthesized swell)');};
+document.getElementById('foghorn').onclick=()=>{AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+  const o=AC.createOscillator(),g=AC.createGain();o.type='sawtooth';o.frequency.value=82;g.gain.setValueAtTime(.12,AC.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,AC.currentTime+2);o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+2);};
+</script></body></html>

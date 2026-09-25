@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Message in a Bottle — Text Hidden in Image</title><link rel="stylesheet" href="css/styles.css">
+<style>
+/* Corked bottle with a wax-sealed scroll inside, rocking on the waves */
+.bottle-stage{width:min(300px,72vw); margin:0 auto; text-align:center; animation:rock 6s ease-in-out infinite}
+@keyframes rock{0%,100%{transform:translateY(0) rotate(-2.5deg)}50%{transform:translateY(-12px) rotate(2.5deg)}}
+.cork{width:46px; height:34px; margin:0 auto; border-radius:7px 7px 4px 4px;
+  background:linear-gradient(180deg,#d8b078 0%,#a37c48 55%,#6e4e26 100%);
+  box-shadow:0 3px 8px rgba(0,0,0,.5), inset 0 2px 3px rgba(255,240,210,.6)}
+.neck{width:58px; height:64px; margin:-3px auto 0; border:2px solid rgba(200,230,210,.5); border-bottom:0;
+  border-radius:9px 9px 0 0; background:linear-gradient(90deg,rgba(120,160,140,.12),rgba(170,220,190,.42),rgba(120,160,140,.12))}
+.bbody{position:relative; width:196px; height:236px; margin:-2px auto 0; border-radius:38px; overflow:hidden;
+  background:linear-gradient(100deg,rgba(110,150,130,.22),rgba(170,220,190,.38) 42%,rgba(110,150,130,.22));
+  border:2px solid rgba(200,230,210,.55);
+  box-shadow:0 26px 60px rgba(0,0,0,.65), inset 0 0 34px rgba(20,60,45,.35)}
+.scroll{position:absolute; left:50%; top:50%; width:128px; height:58px; transform:translate(-50%,-50%) rotate(-13deg);
+  border-radius:29px; background:repeating-linear-gradient(180deg,#f7ecd0 0 9px,#e7d3a4 9px 11px);
+  box-shadow:0 4px 12px rgba(30,20,5,.55), inset 0 -8px 12px rgba(122,85,20,.35)}
+.scroll::before,.scroll::after{content:""; position:absolute; top:6px; bottom:6px; width:20px; border-radius:50%;
+  background:radial-gradient(circle at 40% 40%, #e9d6a8, #8a6a35 75%)}
+.scroll::before{left:-7px}.scroll::after{right:-7px}
+.seal-dot{position:absolute; left:50%; top:50%; width:24px; height:24px; transform:translate(-50%,-50%);
+  border-radius:50%; background:radial-gradient(circle at 35% 30%,#f0716a,#8e1f1a 75%);
+  box-shadow:0 2px 6px rgba(0,0,0,.6)}
+.shine{position:absolute; left:20px; top:14px; bottom:14px; width:24px; border-radius:50%;
+  background:linear-gradient(180deg,rgba(255,255,255,.5),transparent 80%)}
+.bubble{position:absolute; bottom:12px; border-radius:50%; background:rgba(255,255,255,.4); animation:rise 4.5s ease-in infinite}
+@keyframes rise{to{transform:translateY(-190px); opacity:0}}
+.bottle-sea{width:240px; height:26px; margin:10px auto 0; border-radius:50%;
+  background:radial-gradient(ellipse,rgba(77,227,194,.28),transparent 70%)}
+.bottle-read{margin-top:12px; font-size:12px; letter-spacing:.3em; color:var(--gold2); font-family:'Outfit',sans-serif; font-weight:700}
+.bottle-read .mono{font-size:19px; letter-spacing:.08em; display:block; margin-top:2px}
+</style></head><body>
+<div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div>
+<div class="grid"></div><canvas id="stars"></canvas><div id="cursorGlow"></div><div class="noise"></div><div class="vignette"></div></div><div class="map-lines"></div>
+<header class="topbar" id="topbar">
+  <a class="brand" href="index.html" data-link><span class="brand-mark">☠</span><span>DEAD MAN'S <b>CIPHER</b></span></a>
+  <nav class="nav" id="mainNav"><span id="navPill"></span>
+    <a href="index.html" data-link>The Harbor</a><a href="cipher.html" data-link>Secret Signals</a>
+    <a href="stego.html" data-link class="active">Message in a Bottle</a><a href="seal.html" data-link>Wax Seal</a><a href="trials.html" data-link>Signal Lamp</a></nav>
+  <div class="top-right"><div class="live"><i></i><span>LOCAL SESSION</span></div><button class="burger" id="burger">☰</button></div>
+</header>
+<div class="mobile-menu glass hidden" id="mmenu"><a href="index.html">The Harbor</a><a href="cipher.html">Secret Signals</a><a href="stego.html" class="active">Message in a Bottle</a><a href="seal.html">Wax Seal</a><a href="trials.html">Signal Lamp</a></div>
+
+<div class="wrap"><main class="page" id="page">
+  <section class="hero">
+  <div>
+  <div class="eyebrow">☠ Picture deck · Hide text inside a photo</div>
+  <h1 class="pirate-h" style="font-size:clamp(44px,7vw,80px);line-height:1;margin:14px 0">An innocent picture.<br><span class="gold-h">A secret inside.</span></h1>
+  <p class="pirate-lead" style="max-width:62ch">Pick any photo, write a secret note, and tuck it invisibly into the picture's pixels. The photo looks exactly the same — but this deck can pull yer words back out. All aboard yer device.</p>
+  </div>
+  <div class="bottle-stage" aria-hidden="true">
+    <div class="cork"></div><div class="neck"></div>
+    <div class="bbody">
+      <div class="scroll"><div class="seal-dot"></div></div>
+      <div class="shine"></div>
+      <span class="bubble" style="left:24%;width:7px;height:7px;animation-delay:0s"></span>
+      <span class="bubble" style="left:55%;width:5px;height:5px;animation-delay:1.5s"></span>
+      <span class="bubble" style="left:72%;width:9px;height:9px;animation-delay:2.8s"></span>
+    </div>
+    <div class="bottle-sea"></div>
+    <div class="bottle-read">MESSAGE CORKED<span class="mono">SEALED · UNSENT</span></div>
+  </div>
+  </section>
+  <div class="divider" aria-hidden="true"><span class="rope"></span><span class="anchor-medal">🍾</span><span class="rope"></span></div>
+
+  <div class="orders rv">
+    <h4>⚓ SAILOR'S ORDERS — HOW TO WORK THIS DECK</h4>
+    <ol><li><b>Choose a photo</b> (JPG/PNG from your gallery) and <b>write your secret note</b>.</li>
+    <li>Press <b>Hide in picture</b> → press <b>Download PNG</b> and send the picture.</li>
+    <li>To read it back: <b>upload that PNG below</b> and press <b>Pull out the note</b>.</li>
+    <li>⚠ Always share the <b>PNG</b> file — JPG squashes pixels and washes the secret away.</li></ol>
+  </div>
+
+  <section class="bento">
+    <div class="wood glass card span6 rv"><span class="nail tl"></span><span class="nail tr"></span>
+      <span class="kicker">STEP 1 · CORK THE BOTTLE</span><h3 class="pirate-h" style="font-size:26px">Hide text in a picture</h3>
+      <label class="field"><span>PICK A PHOTO</span><input type="file" class="filepick" id="hideFile" accept="image/*"></label>
+      <img class="preview hidden" id="hidePrev" alt="chosen photo">
+      <label class="field"><span>SECRET NOTE</span><textarea id="hideMsg" rows="3" placeholder="e.g. The gold is under the third palm…"></textarea></label>
+      <div class="lens" style="display:flex;gap:10px;font-size:13px;color:var(--muted)">Room in picture: <b class="mono" id="hideCap" style="color:var(--gold2)">pick a photo first</b></div>
+      <div class="cta-row"><button class="btn btn-gold" id="hideBtn">🍾 Hide in picture</button><button class="btn btn-ghost hidden" id="dlBtn">⬇ Download PNG</button></div>
+    </div>
+    <div class="wood glass card span6 rv"><span class="nail tl"></span><span class="nail tr"></span>
+      <span class="kicker">STEP 2 · SMASH THE BOTTLE</span><h3 class="pirate-h" style="font-size:26px">Pull text out of a picture</h3>
+      <label class="field"><span>UPLOAD THE PNG PICTURE</span><input type="file" class="filepick" id="rvFile" accept="image/png,image/*"></label>
+      <img class="preview hidden" id="rvPrev" alt="picture to inspect">
+      <div class="cta-row"><button class="btn btn-gold" id="rvBtn">🪝 Pull out the note</button></div>
+      <div class="kicker" style="margin-top:12px">HIDDEN NOTE</div>
+      <div class="parchment" id="rvOut" style="margin-top:8px">The note will wash up here…</div>
+      <div class="toolbar"><button class="chip" id="rvCopy">⧉ copy note</button></div>
+      <div class="saythis"><b>Say this:</b> “Every pixel is made of red, green and blue values. We replace only the last, invisible bit of each value with one bit of our message — the eye cannot see a 1-step colour change. The first 32 bits store how long the note is, so we know where it ends.”</div>
+    </div>
+  </section>
+</main></div>
+<footer><span>☠ HIDE TEXT IN PICTURES · DONE ABOARD</span><span>NO PAYLOADS LEAVE THIS VESSEL</span></footer>
+<canvas id="work" class="hidden"></canvas>
+<script src="js/shell.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+const work = $('work'), wctx = work.getContext('2d', { willReadFrequently: true });
+
+// Load any chosen file into an <img> element
+function loadImg(file){
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => { URL.revokeObjectURL(url); res(img); };
+    img.onerror = rej; img.src = url;
+  });
+}
+// Draw the photo onto our work canvas (shrunk if huge, for speed)
+function drawFit(img, maxSide){
+  const s = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight));
+  work.width = Math.round(img.naturalWidth * s); work.height = Math.round(img.naturalHeight * s);
+  wctx.drawImage(img, 0, 0, work.width, work.height);
+}
+const room = () => work.width * work.height * 3;   // 1 hidden bit per red/green/blue value
+
+let photoReady = false;
+$('hideFile').addEventListener('change', async e => {
+  const f = e.target.files[0]; if(!f) return;
+  const img = await loadImg(f); drawFit(img, 900); photoReady = true;
+  $('hidePrev').src = work.toDataURL(); $('hidePrev').classList.remove('hidden');
+  $('hideCap').textContent = '≈ ' + Math.floor((room() - 32) / 8) + ' letters fit';
+  toast('🖼 Photo loaded on deck');
+});
+// Hide: turn note into bits, tuck each bit into a pixel's last bit
+$('hideBtn').onclick = e => {
+  if(!photoReady) return toast('Choose a photo first, sailor');
+  const msg = $('hideMsg').value;
+  if(!msg) return toast('Write your secret note first');
+  const bytes = new TextEncoder().encode(msg);
+  if(32 + bytes.length * 8 > room()) return toast('Note too long for this photo — shorter note or bigger picture');
+  setLoading(e.currentTarget, true, 'Corking…');
+  setTimeout(() => {
+    const d = wctx.getImageData(0, 0, work.width, work.height), px = d.data;
+    const bits = [];
+    for(let i = 31; i >= 0; i--) bits.push((bytes.length >> i) & 1);      // length first…
+    bytes.forEach(b => { for(let i = 7; i >= 0; i--) bits.push((b >> i) & 1); }); // …then the note
+    let bi = 0;
+    for(let i = 0; i < px.length && bi < bits.length; i++){
+      if(i % 4 === 3) continue;              // skip transparency channel
+      px[i] = (px[i] & 0xFE) | bits[bi++];   // keep colour, swap only the last bit
+    }
+    wctx.putImageData(d, 0, 0);
+    const url = work.toDataURL('image/png');
+    $('hidePrev').src = url;
+    const dl = $('dlBtn'); dl.classList.remove('hidden');
+    dl.onclick = () => { const a = document.createElement('a'); a.href = url; a.download = 'message-in-a-bottle.png'; a.click(); };
+    setLoading(e.currentTarget, false); toast('🍾 Note corked inside — download the PNG');
+  }, 60);
+};
+// Reveal: read the last bits back out, first 32 bits tell us the note length
+$('rvFile').addEventListener('change', async e => {
+  const f = e.target.files[0]; if(!f) return;
+  const img = await loadImg(f); drawFit(img, 1600);
+  $('rvPrev').src = work.toDataURL(); $('rvPrev').classList.remove('hidden');
+  toast('🖼 Picture loaded — now pull the note');
+});
+$('rvBtn').onclick = e => {
+  if(!work.width) return toast('Upload the PNG picture first');
+  setLoading(e.currentTarget, true, 'Fishing…');
+  setTimeout(() => {
+    const px = wctx.getImageData(0, 0, work.width, work.height).data;
+    const vals = []; for(let i = 0; i < px.length; i++){ if(i % 4 !== 3) vals.push(px[i] & 1); }
+    let len = 0; for(let i = 0; i < 32; i++) len = (len << 1) | vals[i];
+    if(len <= 0 || 32 + len * 8 > vals.length){ $('rvOut').textContent = '⚠ No hidden note found in this picture.'; }
+    else {
+      const bytes = new Uint8Array(len);
+      for(let b = 0; b < len; b++){ let v = 0; for(let i = 0; i < 8; i++) v = (v << 1) | vals[32 + b * 8 + i]; bytes[b] = v; }
+      try { $('rvOut').textContent = new TextDecoder().decode(bytes); toast('🪝 Note pulled out!'); }
+      catch { $('rvOut').textContent = '⚠ No hidden note found in this picture.'; }
+    }
+    setLoading(e.currentTarget, false);
+  }, 60);
+};
+$('rvCopy').onclick = () => copyText($('rvOut').textContent, 'Note copied');
+</script></body></html>

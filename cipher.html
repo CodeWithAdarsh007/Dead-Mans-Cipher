@@ -1,0 +1,152 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Secret Signals — Text Encryption</title><link rel="stylesheet" href="css/styles.css">
+<style>
+/* Ship's radar: phosphor sweep over a brass-ringed scope */
+.radar-wrap{width:min(360px,84vw); margin:0 auto; text-align:center; animation:float 7s ease-in-out infinite}
+#radar{position:relative; width:100%; aspect-ratio:1/1; border-radius:50%; overflow:hidden;
+  background:radial-gradient(circle at 50% 45%, #10241a 0%, #070c08 68%);
+  border:12px solid #4a3a1c; outline:2px solid rgba(201,169,97,.65); outline-offset:5px;
+  box-shadow:0 30px 70px rgba(0,0,0,.7), inset 0 0 40px rgba(0,0,0,.8)}
+.rings{position:absolute; inset:0; border-radius:50%;
+  background:repeating-radial-gradient(circle at 50% 50%, transparent 0 36px, rgba(77,227,194,.28) 36px 37.5px)}
+.ch{position:absolute; left:0; right:0; top:50%; height:1px; background:rgba(77,227,194,.3)}
+.cv{position:absolute; top:0; bottom:0; left:50%; width:1px; background:rgba(77,227,194,.3)}
+.sweep{position:absolute; inset:0; border-radius:50%;
+  background:conic-gradient(from 0deg, rgba(140,255,205,.6), rgba(140,255,205,.12) 18%, transparent 27%);
+  animation:sweep 4s linear infinite}
+@keyframes sweep{to{transform:rotate(360deg)}}
+.blip{position:absolute; width:9px; height:9px; border-radius:50%; background:#8df5c8;
+  box-shadow:0 0 10px #4de3c2, 0 0 24px rgba(77,227,194,.8);
+  animation:ping 2.2s ease-out infinite; transition:left 1s, top 1s}
+.blip:nth-child(2){animation-delay:.7s}.blip:nth-child(3){animation-delay:1.4s}
+@keyframes ping{0%{transform:scale(.6);opacity:1}70%{transform:scale(2.1);opacity:.9}100%{transform:scale(2.6);opacity:0}}
+.scope-read{margin-top:14px; font-size:12px; letter-spacing:.3em; color:#7df0d4; font-family:'Outfit',sans-serif; font-weight:700}
+.scope-read .mono{font-size:19px; letter-spacing:.08em; display:block; margin-top:2px}
+</style></head><body>
+<div class="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="blob b4"></div>
+<div class="grid"></div><canvas id="stars"></canvas><div id="cursorGlow"></div><div class="noise"></div><div class="vignette"></div></div><div class="map-lines"></div>
+<header class="topbar" id="topbar">
+  <a class="brand" href="index.html" data-link><span class="brand-mark">☠</span><span>DEAD MAN'S <b>CIPHER</b></span></a>
+  <nav class="nav" id="mainNav"><span id="navPill"></span>
+    <a href="index.html" data-link>The Harbor</a><a href="cipher.html" data-link class="active">Secret Signals</a>
+    <a href="stego.html" data-link>Message in a Bottle</a><a href="seal.html" data-link>Wax Seal</a><a href="trials.html" data-link>Signal Lamp</a></nav>
+  <div class="top-right"><div class="live"><i></i><span>LOCAL SESSION</span></div><button class="burger" id="burger">☰</button></div>
+</header>
+<div class="mobile-menu glass hidden" id="mmenu"><a href="index.html">The Harbor</a><a href="cipher.html" class="active">Secret Signals</a><a href="stego.html">Message in a Bottle</a><a href="seal.html">Wax Seal</a><a href="trials.html">Signal Lamp</a></div>
+
+<div class="wrap"><main class="page" id="page">
+  <section class="hero">
+  <div>
+  <div class="eyebrow">☠ Text encryption deck · Two sailor ciphers</div>
+  <h1 class="pirate-h" style="font-size:clamp(44px,7vw,80px);line-height:1;margin:14px 0">Scramble the words.<br><span class="gold-h">Keep the key.</span></h1>
+  <p class="pirate-lead" style="max-width:62ch">Two classic ciphers the old sailors actually used. Type plain words, turn them into scrambled signals, and turn them back with the same key. All aboard this page — nothin' sails to any server.</p>
+  </div>
+  <div class="radar-wrap" aria-hidden="true">
+    <div id="radar"><div class="rings"></div><div class="ch"></div><div class="cv"></div><div class="sweep"></div>
+      <span class="blip" style="left:62%;top:30%"></span><span class="blip" style="left:30%;top:58%"></span><span class="blip" style="left:55%;top:70%"></span>
+    </div>
+    <div class="scope-read">SIGNAL SWEEP<span class="mono" id="sweepRead">SCANNING…</span></div>
+  </div>
+  </section>
+  <div class="divider" aria-hidden="true"><span class="rope"></span><span class="anchor-medal">🚩</span><span class="rope"></span></div>
+
+  <div class="orders rv">
+    <h4>⚓ SAILOR'S ORDERS — HOW TO WORK THIS DECK</h4>
+    <ol><li><b>Pick a cipher tab</b> below — Flag Code (easy) or Captain's Keyword (stronger).</li>
+    <li><b>Type your message</b> and set the key (a number, or a secret word).</li>
+    <li>Press <b>Scramble</b> → send the scrambled text to your mate.</li>
+    <li>Your mate enters the <b>same key</b> and presses <b>Read</b> → original message returns.</li></ol>
+  </div>
+
+  <div class="tabs rv" role="tablist" style="margin-top:16px">
+    <button id="tFlag" class="on">🚩 Flag Code (shift)</button><button id="tKey">🗝 Captain's Keyword</button>
+  </div>
+
+  <section class="bento" id="paneFlag">
+    <div class="wood glass card span6 rv"><span class="nail tl"></span><span class="nail tr"></span>
+      <span class="kicker">CIPHER I · FLAG CODE</span><h3 class="pirate-h" style="font-size:26px">Scramble with a number</h3>
+      <label class="field"><span>PLAIN MESSAGE</span><textarea id="czMsg" rows="4" placeholder="e.g. Attack at dawn"></textarea></label>
+      <label class="field"><span>KEY NUMBER: <b id="czShiftV" class="mono" style="color:var(--gold2)">3</b> (each letter slides this far)</span>
+      <input type="range" id="czShift" min="1" max="25" value="3" style="padding:0"></label>
+      <div class="cta-row"><button class="btn btn-gold" id="czEnc">🚩 Scramble</button><button class="btn btn-ghost" id="czDec">📖 Read (unscramble)</button></div>
+      <details class="spy"><summary>🔭 Spyglass: try all 25 keys at once</summary><div class="parchment" id="czAll" style="margin-top:8px">Press “Spy all keys”…</div><div class="cta-row"><button class="chip" id="czSpy">🔭 Spy all keys</button></div></details>
+    </div>
+    <div class="wood glass card span6 rv"><span class="nail tl"></span><span class="nail tr"></span>
+      <span class="kicker">SIGNAL PAPER</span><h3 class="pirate-h" style="font-size:26px">Result</h3>
+      <div class="parchment" id="czOut">Your scrambled signal will appear here…</div>
+      <div class="toolbar"><button class="chip" id="czCopy">⧉ copy result</button><button class="chip" id="czUse">↩ load result back as message</button></div>
+      <div class="saythis"><b>Say this:</b> “Every letter slides forward by the key number — A becomes D with key 3. Spaces and marks stay untouched. Only someone with the same number can slide them back.”</div>
+    </div>
+  </section>
+
+  <section class="bento" id="paneKey" style="display:none">
+    <div class="wood glass card span6 rv in"><span class="nail tl"></span><span class="nail tr"></span>
+      <span class="kicker">CIPHER II · CAPTAIN'S KEYWORD</span><h3 class="pirate-h" style="font-size:26px">Scramble with a secret word</h3>
+      <label class="field"><span>PLAIN MESSAGE</span><textarea id="vgMsg" rows="4" placeholder="e.g. Meet at the old lighthouse"></textarea></label>
+      <label class="field"><span>KEYWORD (letters only, e.g. RUM)</span><input type="text" id="vgKey" placeholder="RUM"></label>
+      <div class="cta-row"><button class="btn btn-gold" id="vgEnc">🗝 Scramble</button><button class="btn btn-ghost" id="vgDec">📖 Read (unscramble)</button></div>
+    </div>
+    <div class="wood glass card span6 rv in"><span class="nail tl"></span><span class="nail tr"></span>
+      <span class="kicker">SIGNAL PAPER</span><h3 class="pirate-h" style="font-size:26px">Result</h3>
+      <div class="parchment" id="vgOut">Your scrambled signal will appear here…</div>
+      <div class="toolbar"><button class="chip" id="vgCopy">⧉ copy result</button><button class="chip" id="vgUse">↩ load result back as message</button></div>
+      <div class="saythis"><b>Say this:</b> “Each letter shifts by a different amount taken from the keyword, repeating over the message. The same letter scrambles differently each time — so letter-counting spies fail, unlike the simple shift.”</div>
+    </div>
+  </section>
+</main></div>
+<footer><span>☠ FLAG CODE · KEYWORD CIPHER · DONE ABOARD</span><span>NO PAYLOADS LEAVE THIS VESSEL</span></footer>
+<script src="js/shell.js"></script>
+<script>
+// --- Cipher I: Flag Code (Caesar shift). Slide every letter forward by N. ---
+function slide(text, n){
+  return text.replace(/[a-z]/gi, ch => {
+    const base = (ch <= 'Z' && ch >= 'A') ? 65 : 97;   // keep upper/lower case
+    return String.fromCharCode((ch.charCodeAt(0) - base + n + 26) % 26 + base);
+  }); // anything that is not a letter (spaces, 123, !) sails through untouched
+}
+const $ = id => document.getElementById(id);
+$('tFlag').onclick = () => { $('tFlag').classList.add('on'); $('tKey').classList.remove('on'); $('paneFlag').style.display=''; $('paneKey').style.display='none'; };
+$('tKey').onclick  = () => { $('tKey').classList.add('on'); $('tFlag').classList.remove('on'); $('paneKey').style.display=''; $('paneFlag').style.display='none'; };
+$('czShift').oninput = e => $('czShiftV').textContent = e.target.value;
+const czN = () => parseInt($('czShift').value);
+$('czEnc').onclick = () => { if(!$('czMsg').value.trim()) return toast('Write a message first, sailor'); $('czOut').textContent = slide($('czMsg').value, czN()); toast('🚩 Signal scrambled'); };
+$('czDec').onclick = () => { if(!$('czMsg').value.trim()) return toast('Paste the scrambled signal first'); $('czOut').textContent = slide($('czMsg').value, 26 - czN()); toast('📖 Signal read'); };
+$('czSpy').onclick = () => { const t = $('czMsg').value || 'WKH NUDNHQ DZDNHV'; let out=''; for(let k=1;k<=25;k++) out += 'key '+String(k).padStart(2,'0')+' → '+slide(t, 26-k)+'\n'; $('czAll').textContent = out; };
+$('czCopy').onclick = () => copyText($('czOut').textContent, 'Signal copied');
+$('czUse').onclick = () => { $('czMsg').value = $('czOut').textContent; toast('Loaded back — now press Read with the same key'); };
+// --- Cipher II: Captain's Keyword (Vigenère). Each letter shifts by the matching keyword letter. ---
+function keyword(text, key, unscramble){
+  key = (key || '').toUpperCase().replace(/[^A-Z]/g, '');
+  if(!key) return null;
+  let ki = 0;
+  return text.replace(/[a-z]/gi, ch => {
+    const base = (ch <= 'Z' && ch >= 'A') ? 65 : 97;
+    const shift = key.charCodeAt(ki % key.length) - 65; ki++;
+    const n = unscramble ? (26 - shift) : shift;
+    return String.fromCharCode((ch.charCodeAt(0) - base + n) % 26 + base);
+  });
+}
+function vgGo(un){
+  if(!$('vgMsg').value.trim()) return toast('Write a message first, sailor');
+  const r = keyword($('vgMsg').value, $('vgKey').value, un);
+  if(r === null) return toast('Set a keyword using letters only (e.g. RUM)');
+  $('vgOut').textContent = r; toast(un ? '📖 Signal read' : '🗝 Signal scrambled');
+}
+$('vgEnc').onclick = () => vgGo(false);
+$('vgDec').onclick = () => vgGo(true);
+$('vgCopy').onclick = () => copyText($('vgOut').textContent, 'Signal copied');
+$('vgUse').onclick = () => { $('vgMsg').value = $('vgOut').textContent; toast('Loaded back — now press Read with the same keyword'); };
+// Radar life: contacts drift each sweep, readout cycles bearings
+(function(){
+  const blips=[...document.querySelectorAll('#radar .blip')];
+  const notes=['SCANNING…','CONTACT ×3','BEARING 042°','SIGNAL STRONG','BEARING 310°'];
+  let ni=0;
+  setInterval(()=>{
+    blips.forEach(b=>{
+      const a=Math.random()*Math.PI*2, r=8+Math.random()*34; // keep contacts on the round scope
+      b.style.left=(50+r*Math.cos(a)).toFixed(1)+'%'; b.style.top=(50+r*Math.sin(a)).toFixed(1)+'%';
+    });
+    document.getElementById('sweepRead').textContent=notes[ni=(ni+1)%notes.length];
+  },4000);
+})();
+</script></body></html>

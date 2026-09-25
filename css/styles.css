@@ -1,0 +1,344 @@
+/* DEAD MAN'S CIPHER — Ultra-premium pirate design system */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=IM+Fell+English:ital@0;1&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Pirata+One&display=swap');
+:root{
+  --abyss:#0b0d09; --deep:#12140f; --deep2:#1a1c13; --panel:rgba(20,18,12,.62);
+  --gold:#c9a961; --gold2:#e6d199; --gold-deep:#7a6234; --parch:#f3e6c8; --ink:#e9dcbd;
+  --muted:#9a917a; --sea:#4de3c2; --blood:#e0524a; --sky:#6fb7ff;
+  --glass:rgba(20,18,12,.55); --glass2:rgba(28,26,17,.42);
+  --line:rgba(201,169,97,.18); --line2:rgba(255,255,255,.08);
+  --shadow:0 24px 60px -18px rgba(0,0,0,.7);
+  --r-lg:22px; --r-md:16px; --r-sm:11px;
+  --ease:cubic-bezier(.22,.9,.28,1); --ease2:cubic-bezier(.16,1,.3,1);
+  --nav-h:72px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+html,body{margin:0;padding:0}
+body{
+  background:var(--abyss); color:var(--ink);
+  font-family:'Cormorant Garamond','IM Fell English',serif; font-size:18.5px; line-height:1.65;
+  overflow-x:hidden; min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:rgba(201,169,97,.35)}
+h1,h2,h3,.display{font-family:'Cinzel',serif; letter-spacing:.02em; line-height:1.05; margin:0}
+.fell{font-family:'IM Fell English',serif}
+.mono{font-family:'JetBrains Mono',monospace}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold2); outline-offset:3px; border-radius:6px}
+
+/* ===== CINEMATIC BACKGROUND LAYERS ===== */
+.bg{position:fixed; inset:0; z-index:-5; overflow:hidden; background:
+  radial-gradient(1200px 800px at 75% -10%, #23261a 0%, transparent 60%),
+  radial-gradient(1000px 700px at 10% 20%, #1c1a10 0%, transparent 55%),
+  linear-gradient(180deg,#0d0f0a 0%, #0b0d09 45%, #070805 100%);}
+.bg .blob{position:absolute; border-radius:50%; filter:blur(90px); opacity:.55; will-change:transform; animation:drift 26s ease-in-out infinite alternate}
+.blob.b1{width:620px;height:620px; left:-140px; top:-140px; background:radial-gradient(circle,#3a2a0e 0%, rgba(201,169,97,.35) 35%, transparent 70%)}
+.blob.b2{width:700px;height:700px; right:-180px; top:6%; background:radial-gradient(circle, rgba(90,74,40,.6) 0%, rgba(201,169,97,.2) 40%, transparent 70%); animation-delay:-8s}
+.blob.b3{width:560px;height:560px; left:30%; bottom:-220px; background:radial-gradient(circle, rgba(120,30,28,.55) 0%, rgba(224,82,74,.18) 45%, transparent 70%); animation-delay:-14s}
+.blob.b4{width:340px;height:340px; left:55%; top:22%; background:radial-gradient(circle, rgba(201,169,97,.5) 0%, transparent 65%); opacity:.32; animation-delay:-4s}
+@keyframes drift{from{transform:translate3d(-24px,-12px,0) scale(1)}to{transform:translate3d(28px,22px,0) scale(1.08)}}
+.bg .grid{position:absolute; inset:0; opacity:.16;
+  background-image:linear-gradient(rgba(201,169,97,.12) 1px, transparent 1px),linear-gradient(90deg, rgba(201,169,97,.12) 1px, transparent 1px);
+  background-size:56px 56px; mask-image:radial-gradient(900px 600px at 50% 10%, black 30%, transparent 75%);}
+.bg .noise{position:absolute; inset:0; opacity:.07; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");}
+.bg .vignette{position:absolute; inset:0; background:radial-gradient(120% 90% at 50% 20%, transparent 55%, rgba(0,0,0,.6) 100%)}
+#stars{position:absolute; inset:0; width:100%; height:100%}
+#cursorGlow{position:absolute; width:520px; height:520px; border-radius:50%; pointer-events:none;
+  background:radial-gradient(circle, rgba(230,209,153,.14) 0%, rgba(77,227,194,.07) 40%, transparent 70%);
+  transform:translate(-50%,-50%); left:50%; top:20%; transition:opacity .4s; mix-blend-mode:screen}
+.map-lines{position:fixed; inset:0; z-index:-4; pointer-events:none; opacity:.1;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300' viewBox='0 0 600 300'%3E%3Cpath d='M0 220 Q150 180 300 200 T600 160' fill='none' stroke='%23e8b44a' stroke-dasharray='6 8'/%3E%3Cpath d='M0 240 Q200 210 400 225 T600 190' fill='none' stroke='%234de3c2' stroke-dasharray='2 10'/%3E%3C/svg%3E");
+  background-size:cover}
+
+/* ===== SHELL / NAV ===== */
+.topbar{position:fixed; top:0; left:0; right:0; z-index:50; height:var(--nav-h);
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:0 clamp(16px,4vw,44px); transition:all .35s var(--ease);
+  background:rgba(10,9,6,.5); backdrop-filter:blur(18px) saturate(1.1); -webkit-backdrop-filter:blur(18px) saturate(1.1);
+  border-bottom:3px double rgba(201,169,97,.45);}
+.topbar.scrolled{height:60px; background:rgba(10,9,6,.82); box-shadow:0 12px 40px rgba(0,0,0,.55)}
+.brand{display:flex; align-items:center; gap:12px; text-decoration:none; font-family:'Cinzel',serif; font-weight:800; letter-spacing:.14em; font-size:14px}
+.brand-mark{width:auto; height:auto; display:grid; place-items:center; background:none; border:0; outline:0;
+  box-shadow:none; color:var(--parch); font-size:27px; line-height:1}
+.brand-mark svg{width:22px;height:22px}
+.brand b{color:var(--gold2)}
+.nav{position:relative; display:flex; gap:4px; padding:6px; border-radius:999px; background:rgba(255,255,255,.04); border:1px solid var(--line2)}
+.nav a{position:relative; z-index:1; text-decoration:none; font-size:13.5px; font-weight:600; letter-spacing:.04em;
+  padding:9px 16px; border-radius:999px; color:var(--muted); transition:color .25s; white-space:nowrap}
+.nav a:hover{color:var(--ink)}
+.nav a.active{color:#0b1120}
+#navPill{position:absolute; top:6px; bottom:6px; border-radius:999px; z-index:0;
+  background:linear-gradient(135deg,var(--gold2),var(--gold)); box-shadow:0 6px 20px rgba(201,169,97,.45);
+  transition:left .45s var(--ease2), width .45s var(--ease2)}
+.top-right{display:flex; align-items:center; gap:12px}
+.live{display:flex; align-items:center; gap:8px; font-size:11px; letter-spacing:.18em; font-weight:700; color:var(--muted)}
+.live i{width:8px;height:8px; border-radius:50%; background:#3ddc84; box-shadow:0 0 12px #3ddc84; animation:pulse 2s infinite}
+@keyframes pulse{50%{opacity:.5}}
+.burger{display:none; background:rgba(255,255,255,.06); border:1px solid var(--line2); color:var(--ink); border-radius:10px; padding:8px; cursor:pointer}
+.mobile-menu{display:none}
+
+/* ===== LAYOUT ===== */
+.wrap{max-width:1220px; margin:0 auto; padding:calc(var(--nav-h) + 28px) clamp(16px,4vw,32px) 40px}
+.page{opacity:0; transform:translateY(14px) scale(.995); filter:blur(6px); transition:opacity .55s var(--ease), transform .55s var(--ease), filter .55s var(--ease)}
+.page.enter{opacity:1; transform:none; filter:none}
+.page.leave{opacity:0; transform:translateY(-10px) scale(.995); filter:blur(6px)}
+.eyebrow{display:flex; align-items:center; gap:10px; font-size:11.5px; font-weight:800; letter-spacing:.28em; color:var(--gold2); text-transform:uppercase}
+.eyebrow::before{content:""; width:28px; height:1px; background:linear-gradient(90deg,var(--gold),transparent)}
+.hero{display:grid; grid-template-columns:1.05fr .95fr; gap:28px; align-items:center; padding:26px 0 10px}
+.hero h1{font-size:clamp(38px,6vw,72px); font-weight:900; margin:14px 0}
+.hero h1 .gold{background:linear-gradient(180deg,#fff3d0 0%, var(--gold2) 35%, var(--gold) 60%, #7c5514 100%); -webkit-background-clip:text; background-clip:text; color:transparent; text-shadow:0 20px 60px rgba(201,169,97,.25)}
+.hero p.lead{color:#c3cdda; font-size:clamp(15px,2vw,18px); max-width:54ch}
+.cta-row{display:flex; gap:12px; flex-wrap:wrap; margin-top:22px}
+
+/* ===== BUTTONS ===== */
+.btn{position:relative; display:inline-flex; align-items:center; gap:10px; text-decoration:none; cursor:pointer;
+  font-weight:700; font-size:14.5px; letter-spacing:.02em; padding:14px 22px; border-radius:14px; border:1px solid transparent;
+  transition:transform .25s var(--ease), box-shadow .25s, background .25s, filter .25s; will-change:transform}
+.btn svg{width:17px;height:17px; transition:transform .25s var(--ease)}
+.btn:hover svg{transform:translateX(3px)}
+.btn-gold{background:linear-gradient(180deg,#e0c88f,var(--gold) 55%,#8a6f3a); color:#191204; box-shadow:0 10px 26px -12px rgba(201,169,97,.55), inset 0 1px 0 rgba(255,250,230,.6)}
+.btn-gold:hover{transform:translateY(-2px) scale(1.02); box-shadow:0 20px 44px -10px rgba(201,169,97,.75)}
+.btn-gold:active{transform:translateY(0) scale(.98)}
+.btn-ghost{background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.12); color:var(--ink); backdrop-filter:blur(12px)}
+.btn-ghost:hover{transform:translateY(-2px); background:rgba(255,255,255,.09); box-shadow:0 14px 30px rgba(0,0,0,.4)}
+.btn:active{transform:scale(.97)}
+.btn[disabled]{opacity:.45; cursor:not-allowed; transform:none!important}
+.btn .spin{width:16px;height:16px; border-radius:50%; border:2px solid rgba(0,0,0,.25); border-top-color:currentColor; animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ===== GLASS CARDS ===== */
+.glass{background:linear-gradient(180deg, rgba(233,220,189,.06), rgba(233,220,189,.015)), var(--glass);
+  border:1px solid rgba(233,220,189,.13); border-top-color:rgba(233,220,189,.22);
+  border-radius:var(--r-lg); box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.08);
+  backdrop-filter:blur(20px) saturate(1.25); -webkit-backdrop-filter:blur(20px) saturate(1.25)}
+.card{padding:22px; position:relative; overflow:hidden; transition:transform .35s var(--ease), box-shadow .35s, border-color .35s}
+.card::after{content:""; position:absolute; inset:0; pointer-events:none; opacity:0; transition:opacity .35s;
+  background:radial-gradient(600px 200px at var(--mx,50%) 0%, rgba(230,209,153,.14), transparent 60%)}
+.card:hover{transform:translateY(-4px); border-color:rgba(201,169,97,.4); box-shadow:0 30px 70px -20px rgba(0,0,0,.8), 0 0 0 1px rgba(201,169,97,.15), 0 16px 50px -18px rgba(201,169,97,.35)}
+.card:hover::after{opacity:1}
+.kicker{font-size:11px; letter-spacing:.22em; font-weight:800; color:var(--gold2)}
+.card h3{font-size:20px; margin:8px 0 6px}
+.card p{color:var(--muted); font-size:14.5px; margin:0}
+
+/* bento */
+.bento{display:grid; grid-template-columns:repeat(12,1fr); gap:16px; margin-top:18px}
+.span4{grid-column:span 4}.span6{grid-column:span 6}.span8{grid-column:span 8}.span12{grid-column:span 12}.span3{grid-column:span 3}
+.stat-num{font-family:'Cinzel',serif; font-size:38px; font-weight:800; color:var(--gold2)}
+.bar{height:8px; border-radius:99px; background:rgba(255,255,255,.08); overflow:hidden; margin-top:10px}
+.bar i{display:block; height:100%; width:0; border-radius:99px; background:linear-gradient(90deg,var(--gold2),var(--gold),var(--sea)); transition:width 1.2s var(--ease2)}
+
+/* hero visual */
+.ship-stage{position:relative; min-height:460px; display:grid; place-items:center}
+.ship{width:min(440px,90%); filter:drop-shadow(0 30px 60px rgba(0,0,0,.7)); animation:float 6s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-12px) rotate(-1deg)}}
+.float-card{position:absolute; padding:14px 16px; border-radius:16px; font-size:13px; min-width:170px;
+  background:rgba(16,14,9,.78); backdrop-filter:blur(16px); border:1px solid rgba(201,169,97,.3); box-shadow:var(--shadow); animation:float 7s ease-in-out infinite}
+.float-card b{display:block; font-size:12px; letter-spacing:.14em; color:var(--gold2)}
+.float-card.f1{top:6%; left:0}.float-card.f2{bottom:14%; right:0; animation-delay:-2.5s}.float-card.f3{top:44%; right:6%; animation-delay:-4s; min-width:0}
+.compass{width:86px;height:86px; border-radius:50%; border:1px solid rgba(201,169,97,.4); display:grid; place-items:center; font-family:'Cinzel'; font-weight:800; color:var(--gold2); background:radial-gradient(circle, rgba(201,169,97,.18), transparent 70%); animation:spinSlow 18s linear infinite}
+@keyframes spinSlow{to{transform:rotate(360deg)}}
+
+/* ===== FORMS ===== */
+.field{display:block; margin:14px 0}
+.field>span{display:block; font-size:12px; letter-spacing:.16em; font-weight:800; color:var(--muted); margin-bottom:8px}
+textarea,input[type=text],input[type=password],input[type=number],select{
+  width:100%; background:rgba(3,8,18,.6); border:1px solid rgba(255,255,255,.12); color:var(--ink);
+  border-radius:14px; padding:14px 15px; font-size:14.5px; font-family:inherit; transition:border-color .25s, box-shadow .25s, background .25s}
+textarea:focus,input:focus,select:focus{outline:none; border-color:rgba(201,169,97,.7); background:rgba(8,16,32,.85); box-shadow:0 0 0 3px rgba(201,169,97,.18), 0 0 30px rgba(201,169,97,.15)}
+textarea{resize:vertical; min-height:90px; font-family:'JetBrains Mono',monospace}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+.output{background:#080906; border:1px solid rgba(201,169,97,.3); border-radius:14px; padding:16px; font-family:'JetBrains Mono',monospace; font-size:13px; word-break:break-all; max-height:260px; overflow:auto; white-space:pre-wrap}
+.toolbar{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+.chip{display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:700; letter-spacing:.06em; padding:7px 12px; border-radius:999px; background:rgba(255,255,255,.06); border:1px solid var(--line2); color:#cbd5e6; cursor:pointer; transition:all .25s}
+.chip:hover{border-color:var(--gold); color:var(--gold2); transform:translateY(-1px)}
+.tabs{display:flex; gap:6px; background:rgba(255,255,255,.05); border:1px solid var(--line2); padding:5px; border-radius:14px; width:max-content; max-width:100%}
+.tabs button{border:0; background:transparent; color:var(--muted); font-weight:700; font-size:13.5px; padding:10px 18px; border-radius:10px; cursor:pointer; transition:all .25s}
+.tabs button.on{background:linear-gradient(135deg,var(--gold2),var(--gold)); color:#151003; box-shadow:0 8px 20px rgba(201,169,97,.4)}
+.toast-wrap{position:fixed; bottom:22px; right:22px; z-index:99; display:flex; flex-direction:column; gap:10px}
+.toast{background:rgba(10,18,34,.92); border:1px solid rgba(201,169,97,.35); border-left:4px solid var(--gold); padding:13px 16px; border-radius:12px; font-size:14px; box-shadow:var(--shadow); animation:tin .4s var(--ease2); max-width:340px}
+@keyframes tin{from{opacity:0; transform:translateX(20px)}}
+.seal-stamp{width:120px;height:120px; border-radius:50%; display:grid; place-items:center; text-align:center; font-family:'Cinzel'; font-weight:900; font-size:13px; letter-spacing:.1em; color:#2a1505; background:radial-gradient(circle at 30% 30%, #f9d67e, var(--gold) 45%, #7c4d0e 90%); box-shadow:0 14px 40px rgba(201,169,97,.4), inset 0 2px 6px rgba(255,255,255,.6), inset 0 -6px 14px rgba(0,0,0,.4); transform:scale(2); opacity:0; transition:all .5s cubic-bezier(.2,1.6,.4,1)}
+.seal-stamp.show{transform:scale(1) rotate(-8deg); opacity:1}
+
+/* reveal */
+.rv{opacity:0; transform:translateY(26px); transition:opacity .7s var(--ease), transform .7s var(--ease)}
+.rv.in{opacity:1; transform:none}
+.timeline{position:relative; margin-top:14px; padding-left:26px}
+.timeline::before{content:""; position:absolute; left:7px; top:6px; bottom:6px; width:2px; background:linear-gradient(var(--gold), transparent)}
+.tl-item{position:relative; padding:12px 0}
+.tl-item::before{content:"◆"; position:absolute; left:-26px; top:14px; color:var(--gold); font-size:12px}
+.log-item{display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border-radius:12px; background:rgba(255,255,255,.03); border:1px solid var(--line2); margin-top:8px; font-size:14px}
+.log-item button{margin-left:auto; background:none; border:0; color:var(--blood); cursor:pointer}
+footer{border-top:3px double rgba(201,169,97,.5); margin-top:46px; padding:26px clamp(16px,4vw,32px); display:flex; justify-content:center; gap:26px; flex-wrap:wrap; text-align:center; color:var(--muted); font-size:13px; letter-spacing:.3em; font-family:'Outfit',sans-serif; font-weight:600; max-width:1220px; margin-left:auto; margin-right:auto}
+canvas.chart{width:100%; height:180px; background:rgba(0,0,0,.35); border-radius:12px; border:1px solid var(--line2)}
+
+/* RESPONSIVE — reorganize, not just shrink */
+@media(max-width:1020px){
+  .hero{grid-template-columns:1fr; text-align:left}
+  .ship-stage{min-height:380px; order:-1}
+  .bento{grid-template-columns:repeat(6,1fr)}
+  .span4,.span3{grid-column:span 3}.span6,.span8{grid-column:span 6}
+}
+@media(max-width:760px){
+  .nav{display:none}
+  .burger{display:block}
+  .mobile-menu{display:flex; position:fixed; top:var(--nav-h); left:12px; right:12px; z-index:49; flex-direction:column; gap:6px; padding:12px; border-radius:18px}
+  .mobile-menu a{text-decoration:none; padding:13px 14px; border-radius:12px; background:rgba(255,255,255,.05); font-weight:700}
+  .mobile-menu a.active{background:linear-gradient(135deg,var(--gold2),var(--gold)); color:#151003}
+  .mobile-menu.hidden{display:none}
+  .grid2{grid-template-columns:1fr}
+  .bento{grid-template-columns:1fr}
+  .span4,.span6,.span8,.span3,.span12{grid-column:span 1}
+  .float-card.f1{left:2%}.float-card.f2{right:2%}
+  .live span{display:none}
+  .wrap{padding-top:calc(var(--nav-h) + 14px)}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important; transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
+}
+
+/* ===== SAILOR THEME DRESSING ===== */
+/* Signal-flag bunting strung under the navbar (injected by shell.js) */
+.bunting{position:fixed; left:0; right:0; z-index:48; display:flex; justify-content:center; gap:5px;
+  padding:6px 10px 0; pointer-events:none; overflow:hidden}
+.bunting i{width:15px; height:17px; clip-path:polygon(0 0,100% 0,50% 100%); opacity:.92;
+  animation:flagwave 2.6s ease-in-out infinite alternate; box-shadow:0 2px 6px rgba(0,0,0,.4)}
+@keyframes flagwave{from{transform:translateY(0) rotate(-4deg)}to{transform:translateY(3px) rotate(4deg)}}
+/* Rope divider with anchor medallion */
+.divider{display:flex; align-items:center; gap:14px; margin:24px 0 6px}
+.divider .rope{flex:1; position:relative; border-top:1px solid rgba(201,169,97,.55)}
+.divider .rope::after{content:""; position:absolute; top:3px; left:0; right:0; border-top:1px solid rgba(201,169,97,.25)}
+.divider .anchor-medal{width:44px; height:44px; flex:0 0 auto; display:grid; place-items:center; font-size:21px;
+  border-radius:50%; color:#1a1204;
+  background:radial-gradient(circle at 32% 28%,#f9e08a,var(--gold) 55%,#7c5514);
+  border:2px solid rgba(255,243,208,.7); box-shadow:0 8px 22px rgba(201,169,97,.45)}
+/* Aged parchment output — the captain's paper */
+.parchment{background:linear-gradient(180deg,#f7ecd0,#e2c895); color:#2b1d08;
+  border:1px solid #8a6a35; border-radius:14px; padding:16px;
+  font-family:'JetBrains Mono',monospace; font-size:13.5px; line-height:1.7;
+  word-break:break-all; white-space:pre-wrap; max-height:250px; overflow:auto;
+  box-shadow:inset 0 0 46px rgba(122,85,20,.28), 0 10px 26px rgba(0,0,0,.45)}
+/* Numbered sailing orders — how to work each tool */
+.orders{background:rgba(201,169,97,.06); border:1.5px dashed rgba(201,169,97,.55);
+  border-radius:16px; padding:16px 18px; margin-top:16px}
+.orders h4{margin:0; font-family:'Cinzel',serif; font-size:14px; letter-spacing:.18em; color:var(--gold2)}
+.orders ol{margin:10px 0 0; padding-left:20px; color:#cdd6e8; font-size:14.5px}
+.orders li{margin:6px 0}
+.orders li b{color:var(--gold2)}
+/* One line to say in the viva */
+.saythis{margin-top:12px; border-left:3px solid var(--sea); background:rgba(77,227,194,.07);
+  padding:11px 14px; border-radius:0 12px 12px 0; font-size:14px; color:#c9d2e4}
+.saythis b{color:var(--sea)}
+/* Brass porthole signal lamp (Morse page) */
+.lamp{width:130px; height:130px; border-radius:50%; margin:6px auto;
+  background:radial-gradient(circle at 50% 42%, #16263f 0%, #070f1e 70%);
+  border:12px solid #6b4a1e; outline:2px solid rgba(201,169,97,.7);
+  box-shadow:0 14px 34px rgba(0,0,0,.6), inset 0 0 24px rgba(0,0,0,.8);
+  transition:background .12s, box-shadow .12s; display:grid; place-items:center;
+  font-size:30px; color:rgba(230,209,153,.25)}
+.lamp.on{background:radial-gradient(circle at 50% 45%, #fff8d2 0%, var(--gold2) 45%, #8a5f16 100%);
+  box-shadow:0 0 70px rgba(230,209,153,.85), 0 0 24px rgba(230,209,153,.6); color:#3a2706}
+/* File picker styled as a supply crate */
+input[type=file].filepick{display:block; width:100%; padding:12px; cursor:pointer;
+  border:1.5px dashed rgba(201,169,97,.55); border-radius:14px;
+  background:rgba(3,8,18,.5); color:var(--ink); font-family:inherit; font-size:13.5px}
+input[type=file].filepick::file-selector-button{background:linear-gradient(135deg,var(--gold2),var(--gold));
+  border:0; border-radius:9px; padding:9px 15px; font-weight:800; cursor:pointer; margin-right:12px; color:#1a1204}
+.hidden{display:none!important}
+img.preview{width:100%; border-radius:12px; border:1px solid rgba(201,169,97,.3); margin-top:10px; display:block}
+details.spy{margin-top:12px; font-size:13.5px}
+details.spy summary{cursor:pointer; color:var(--gold2); font-weight:700; padding:6px 0}
+.badge{display:inline-block; padding:7px 16px; border-radius:999px; font-weight:800; font-size:13px; letter-spacing:.1em}
+.badge.ok{background:rgba(77,227,194,.14); color:#7df0d4; border:1px solid rgba(77,227,194,.55)}
+.badge.bad{background:rgba(224,82,74,.14); color:#ff9d97; border:1px solid rgba(224,82,74,.55)}
+@media(max-width:760px){
+  .bunting{gap:3px}
+  .bunting i{width:10px; height:12px}
+  .lamp{width:104px; height:104px; border-width:9px}
+  .tallship{opacity:.07; right:-160px}
+}
+
+/* ===== FULL PIRATE DRESSING ===== */
+.pirate-h{font-family:'Pirata One','Cinzel',serif; font-weight:400; letter-spacing:.03em}
+/* Dark-wood framed panel with brass nails */
+.wood{position:relative; border-radius:18px; border:3px solid #6b4a1e;
+  outline:1px solid rgba(201,169,97,.55); outline-offset:5px;
+  background:linear-gradient(180deg, rgba(60,38,16,.55), rgba(24,15,6,.65)), var(--glass);
+  box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.08)}
+.wood::before{content:""; position:absolute; inset:7px; border:1px dashed rgba(201,169,97,.4);
+  border-radius:12px; pointer-events:none}
+.nail{position:absolute; width:11px; height:11px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, #ffe9a8, #9a6b1e 70%);
+  box-shadow:0 1px 3px rgba(0,0,0,.7)}
+.nail.tl{top:12px; left:12px}.nail.tr{top:12px; right:12px}
+.nail.bl{bottom:12px; left:12px}.nail.br{bottom:12px; right:12px}
+/* Treasure-map voyage panel */
+.treasure{background:
+  radial-gradient(500px 220px at 50% 0%, rgba(201,169,97,.14), transparent 70%),
+  repeating-linear-gradient(0deg, rgba(122,85,20,.06) 0 2px, transparent 2px 26px),
+  repeating-linear-gradient(90deg, rgba(122,85,20,.06) 0 2px, transparent 2px 26px),
+  linear-gradient(180deg,#1a1409,#0d0a05);
+  border:2px solid #8a6a35; border-radius:16px}
+.port{display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:700;
+  padding:7px 13px; border-radius:999px; margin:3px;
+  background:rgba(255,255,255,.05); border:1px solid var(--line2); color:var(--muted); transition:all .4s}
+.port.done{background:rgba(201,169,97,.16); border-color:var(--gold); color:var(--gold2);
+  box-shadow:0 0 16px rgba(201,169,97,.3)}
+.port.broke{background:rgba(224,82,74,.16); border-color:var(--blood); color:#ff9d97}
+.route{position:relative; height:86px; margin:18px 6px 6px;
+  border-top:3px dashed rgba(201,169,97,.65); border-radius:50%}
+.route .harbor{position:absolute; left:0; top:-24px; font-size:30px}
+.route .island{position:absolute; right:0; top:-26px; font-size:32px; text-align:center}
+.route .island small{display:block; font-size:10px; letter-spacing:.2em; color:var(--gold2); font-weight:800}
+#ship{position:absolute; top:-34px; left:4%; font-size:34px; transition:left 2.6s linear;
+  filter:drop-shadow(0 8px 12px rgba(0,0,0,.7))}
+#ship.sailing{animation:bob .9s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px) rotate(-4deg)}}
+.shiplog{font-family:'JetBrains Mono',monospace; font-size:12.5px; line-height:1.9;
+  background:rgba(0,0,0,.45); border:1px solid rgba(201,169,97,.25); border-radius:12px;
+  padding:12px 14px; max-height:190px; overflow:auto; white-space:pre-wrap}
+.shiplog .good{color:#7df0d4}.shiplog .bad{color:#ff9d97}.shiplog .wind{color:var(--gold2)}
+.verdict{border-radius:16px; padding:16px 18px; margin-top:12px; display:none;
+  font-family:'Cinzel',serif; font-weight:800; letter-spacing:.06em; font-size:17px}
+.verdict.show{display:block; animation:tin .5s var(--ease2)}
+.verdict.intact{background:linear-gradient(135deg, rgba(77,227,194,.2), rgba(77,227,194,.06));
+  border:2px solid #4de3c2; color:#a9f5d8; box-shadow:0 0 34px rgba(77,227,194,.3)}
+.verdict.broken{background:linear-gradient(135deg, rgba(224,82,74,.22), rgba(224,82,74,.06));
+  border:2px solid var(--blood); color:#ffc4c0; box-shadow:0 0 34px rgba(224,82,74,.3)}
+.storm-pick{display:flex; align-items:center; gap:10px; margin-top:12px; font-size:14px;
+  background:rgba(111,183,255,.07); border:1px solid rgba(111,183,255,.35);
+  padding:10px 14px; border-radius:12px; cursor:pointer}
+.storm-pick input{width:18px; height:18px; accent-color:var(--blood); cursor:pointer}
+/* ===== VINTAGE TALL-SHIP MUSEUM THEME ===== */
+/* Thin double gold rule beneath the navbar (injected by shell.js) */
+.topline{position:fixed; left:0; right:0; z-index:48; pointer-events:none;
+  border-top:1px solid rgba(201,169,97,.55); padding-top:3px}
+.topline::after{content:""; display:block; border-top:1px solid rgba(201,169,97,.25)}
+/* Tall-ship silhouette drifting behind every page */
+.tallship{position:fixed; right:-50px; bottom:0; z-index:-3; width:min(620px,58vw);
+  opacity:.15; pointer-events:none; filter:sepia(.6)}
+.tallship svg{width:100%; height:auto; display:block; animation:sway 9s ease-in-out infinite alternate}
+@keyframes sway{from{transform:translateY(0) rotate(0deg)}to{transform:translateY(-10px) rotate(-.6deg)}}
+/* Circular portrait medallions with double gold ring */
+.medal{width:84px; height:84px; border-radius:50%; border:2px solid #c9a961;
+  outline:1px solid rgba(201,169,97,.4); outline-offset:4px; display:grid; place-items:center;
+  font-size:34px; background:radial-gradient(circle at 35% 30%, rgba(230,209,153,.22), rgba(0,0,0,.45));
+  box-shadow:0 10px 26px rgba(0,0,0,.55); flex:0 0 auto}
+/* Museum placard band + thin double rules */
+.placard{border-top:1px solid rgba(201,169,97,.4); border-bottom:1px solid rgba(201,169,97,.4);
+  padding:30px 12px; text-align:center}
+.rule-double{border-top:1px solid rgba(201,169,97,.5); margin:26px 0 0}
+.rule-double::after{content:""; display:block; border-top:1px solid rgba(201,169,97,.25); margin-top:3px}
+/* Engraved timeline: gold-ringed ports on a hairline */
+.timeline::before{background:linear-gradient(rgba(201,169,97,.8), transparent); width:1px; left:8px}
+.tl-item::before{content:""; position:absolute; left:-27px; top:17px; width:9px; height:9px; border-radius:50%;
+  border:1.5px solid var(--gold); background:var(--abyss)}
+/* Keep chrome (nav, buttons, labels, inputs) in clean sans; prose goes classical serif */
+.nav a,.btn,.chip,.tabs button,.kicker,.eyebrow,.field>span,.badge,.live,.port{font-family:'Outfit',sans-serif}
+.card p,.lead,.orders li,.saythis,.log-item,.placard p{font-size:1.06em}
+/* Shared pirate headings & leads (full-theme set) */
+.gold-h{background:linear-gradient(180deg,#fff3d0,var(--gold2) 40%,var(--gold));
+  -webkit-background-clip:text; background-clip:text; color:transparent}
+.pirate-lead{font-family:'IM Fell English',serif; font-style:italic; color:#c3cdda; font-size:18px; line-height:1.65}
