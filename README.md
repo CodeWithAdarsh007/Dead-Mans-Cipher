@@ -1,103 +1,41 @@
-# ☠ DEAD MAN'S CIPHER
+# Dead-Mans-Cipher
 
-*A sailor's secret-keeping toolkit. Fully on your device.*
+A sailor's secret-keeping toolkit — fully on your device.
 
----
+[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-## 🏠 The Harbor
+Dead-Mans-Cipher is a privacy-focused application designed for secure, local secret management. Inspired by the concept of a sailor's trusted journal, it ensures that your sensitive information remains entirely on your device, free from external servers or account requirements. All encryption and decryption processes are handled locally, providing robust security and user control.
 
-Welcome aboard, Captain. This be your personal toolkit for scrumblin' codes, hidin' notes in bottles, sealin' wax, and flashin' signals — all run locally, no servers needed.
+*   **Local-First Encryption:** All cryptographic operations are performed on your device, ensuring data privacy.
+*   **No Server Reliance:** Eliminates the need for external servers or cloud storage for your secrets.
+*   **Account-Free:** No user accounts or sign-ups are required, simplifying access and enhancing anonymity.
+*   **User-Friendly Interface:** Designed for ease of use, even for those not deeply familiar with encryption.
 
-### Pages
+## Installation
 
-| Page | What Ye'll Find |
-|------|----------------|
-| 🏠 **The Harbor** (`index.html`) | Main page — the quarterdeck. Compass, log, fleet readiness |
-| 🚩 **Secret Signals** (`cipher.html`) | Flag Code (Caesar shift) and Captain's Keyword (Vigenère) |
-| 📜 **Wax Seal** (`seal.html`) | Full 6-step voyage: write → lock → fingerprint → send → verify → open |
-| 📦 **Message in a Bottle** (`stego.html`) | Hide text inside PNG images using LSB steganography |
-| 💡 **Signal Lamp** (`trials.html`) | Convert text to Morse code and flash it with the brass lamp |
+```bash
+# This project is built using HTML, CSS, and JavaScript and can be run directly from your browser.
+# Download the latest release or clone the repository:
 
----
+git clone https://github.com/CodeWithAdarsh007/Dead-Mans-Cipher.git
+cd Dead-Mans-Cipher
+```
 
-## ⚓ How It Works
+To use Dead-Mans-Cipher, simply open the `index.html` file in your web browser.
 
-All encryption be performed locally in yer browser using the Web Crypto API. No payload ever leaves yer device — the sea keeps yer secrets safe.
+## Quick start
 
-The encryption steps be:
+1.  Open `index.html` in your web browser.
+2.  Enter your secret message in the provided text area.
+3.  Enter your chosen password.
+4.  Click "Encrypt".
+5.  Copy the resulting ciphertext.
+6.  To decrypt, paste the ciphertext into the input field, enter the correct password, and click "Decrypt".
 
-- **Secret Signals** — Slide letters by a number (shift cipher) or by a keyword (Vigenère)
-- **Message in a Bottle** — Hide text in the last bit of each RGB pixel — invisible to the eye
-- **Wax Seal** — Six steps: write → encrypt with key → fingerprint with SHA-256 → send → verify fingerprint → decrypt with key
-- **Signal Lamp** — Convert each letter to dots and dashes (Morse), flash short for dot, long for dash
+## Contributing
 
----
+Contributions are welcome! Please read our [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to submit pull requests and report issues.
 
-## 🛠 Tech Stack
+## License
 
-<div style="background:var(--abyss); color:var(--ink); padding:20px; border-radius:12px; margin:20px 0; font-family:'Cormorant Garamond','IM Fell English',serif;">
-
-<span style="display:inline-block; margin-right:20px; margin-bottom:10px;">
-  <img src="https://raw.githubusercontent.com/github/explore/main/topics/html-html5/html.svg" alt="HTML5" width="32" height="32" style="filter: invert(36%) sepia(82%) saturate(33%) hue-rotate(186deg) brightness(105%) contrast(101);">
-  <div style="font-size:12px; color:var(--muted); text-align:center;">HTML5</div>
-</span>
-
-<span style="display:inline-block; margin-right:20px; margin-bottom:10px;">
-  <img src="https://raw.githubusercontent.com/github/explore/main/topics/css-css3/css.svg" alt="CSS3" width="32" height="32" style="filter: invert(36%) sepia(82%) saturate(33%) hue-rotate(186deg) brightness(105%) contrast(101);">
-  <div style="font-size:12px; color:var(--muted); text-align:center;">CSS3</div>
-</span>
-
-<span style="display:inline-block; margin-right:20px; margin-bottom:10px;">
-  <img src="https://raw.githubusercontent.com/github/explore/main/topics/javascript-js/js.svg" alt="JavaScript" width="32" height="32" style="filter: invert(36%) sepia(82%) saturate(33%) hue-rotate(186deg) brightness(105%) contrast(101);">
-  <div style="font-size:12px; color:var(--muted); text-align:center;">JavaScript</div>
-</span>
-
-<span style="display:inline-block; margin-right:20px; margin-bottom:10px;">
-  <div style="width:32px; height:32; background:linear-gradient(135deg, #4de3c2 0%, #0066cc 100%); border-radius:6px; display:flex; align-items:center; justify-content:center; color:#000; font-weight:bold; font-size:14px;">WCA</div>
-  <div style="font-size:12px; color:var(--muted); text-align:center; margin-top:4px;">Web Crypto API</div>
-</span>
-
-<span style="display:inline-block; margin-right:20px; margin-bottom:10px;">
-  <div style="width:32px; height:32; background:rgba(77,227,194,.3); border-radius:6px; display:flex; align-items:center; justify-content:center; color:#4de3c2; font-weight:bold; font-size:14px;">📟</div>
-  <div style="font-size:12px; color:var(--muted); text-align:center; margin-top:4px;">Canvas API</div>
-</span>
-
-</div>
-
----
-
-## 📦 Features
-
-- **Secret Signals** — Caesar shift cipher and Vigenère keyword cipher
-- **Message in a Bottle** — Hide text inside PNG images using LSB steganography
-- **Wax Seal** — Full 6-step encryption voyage: write → lock → fingerprint → send → verify → open
-- **Signal Lamp** — Convert text to Morse code and flash it visually
-
----
-
-## 🎨 Technologies
-
-- HTML5 + CSS3 with custom properties, animations, and a pirate aesthetic
-- Vanilla JavaScript (ES6+) — no frameworks, no build steps
-- **Web Crypto API** for all encryption
-- **Canvas API** for renderin' the visual bits (stars, compass, particles)
-- **localStorage** for savin' yer logbook entries
-
----
-
-## ⛵ Running Ashore
-
-Just open any `.html` file in yer browser. No installation, no dependencies. Works on desktop or mobile.
-
-> **⚓ Cap'n's Orders:** Keep yer browser open and yer secrets local. Fair winds and followin' seas.
-
----
-
-*Dead Man's Cipher — Because some secrets are meant to sink with the ship.*
-
----
-
-<div style="margin-top:40px; padding-top:20px; border-top:1px solid var(--line); font-size:12px; color:var(--muted);">
-    <a href="https://github.com/yourname/zetta-byte-5.0" style="color:var(--muted); text-decoration:none;">View on GitHub</a> · 
-    <a href="index.html" style="color:var(--muted); text-decoration:none;">Visit The Harbor</a>
-</div>
+This project is licensed under the MIT License.
