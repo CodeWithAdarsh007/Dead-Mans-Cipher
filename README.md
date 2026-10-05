@@ -250,20 +250,6 @@ Dead Man's Cipher is both a demonstration and a learning tool — an approachabl
 
 <p align="center"><samp>·&nbsp;&nbsp;·&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;───&nbsp;&nbsp;&nbsp;⚓&nbsp;&nbsp;&nbsp;───&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;·&nbsp;&nbsp;·</samp></p>
 
-## 🎨 Theme palette
-
-| Swatch | Hex | Role |
-|:--|:--|:--|
-| <img alt="Signal Orange" src="https://img.shields.io/badge/-%20-ff4500?style=for-the-badge"> | `#ff4500` | **Signal Orange** — accents, headings, glow |
-| <img alt="Lantern Gold" src="https://img.shields.io/badge/-%20-ffa657?style=for-the-badge"> | `#ffa657` | **Lantern Gold** — secondary highlights |
-| <img alt="Hull Black" src="https://img.shields.io/badge/-%20-0d1117?style=for-the-badge"> | `#0d1117` | **Hull Black** — page background |
-| <img alt="Deck Grey" src="https://img.shields.io/badge/-%20-161b22?style=for-the-badge"> | `#161b22` | **Deck Grey** — panels & cards |
-| <img alt="Rigging" src="https://img.shields.io/badge/-%20-30363d?style=for-the-badge"> | `#30363d` | **Rigging** — borders & dividers |
-| <img alt="Parchment" src="https://img.shields.io/badge/-%20-c9d1d9?style=for-the-badge"> | `#c9d1d9` | **Parchment** — body text |
-| <img alt="Fog" src="https://img.shields.io/badge/-%20-8b949e?style=for-the-badge"> | `#8b949e` | **Fog** — muted text |
-
-<p align="center"><samp>·&nbsp;&nbsp;·&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;───&nbsp;&nbsp;&nbsp;⚓&nbsp;&nbsp;&nbsp;───&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;·&nbsp;&nbsp;·</samp></p>
-
 <h3 align="center">⚓&nbsp;&nbsp;FAIR WINDS AND SCRAMBLED SIGNALS.&nbsp;&nbsp;☠</h3>
 <p align="center">
   <sub><samp>no servers · no trackers · no accounts · just ciphers</samp></sub>
