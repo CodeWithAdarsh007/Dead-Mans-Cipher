@@ -1,62 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 280" width="100%" height="280" style="display:block;margin:0 auto">
-  <defs>
+<p align="center">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200" width="100%">
     <style>
+      .bg { fill: #f6f8fa; }
+      .title { fill: #24292f; font-family: monospace; font-size: 42px; font-weight: bold; }
+      .subtitle { fill: #57606a; font-family: monospace; font-size: 16px; font-weight: 500; letter-spacing: 2px; }
+      .accent { fill: none; stroke: #24292f; stroke-width: 1.5; opacity: 0.3; }
+      
       @media (prefers-color-scheme: dark) {
-        .banner-bg { fill: #0b0d09; }
-        .banner-text-main { fill: #e6d199; }
-        .banner-text-sub { fill: #4de3c2; }
-        .banner-accent { stroke: #c9a961; }
-        .banner-deco { fill: #c9a961; opacity: 0.3; }
-      }
-      @media (prefers-color-scheme: light) {
-        .banner-bg { fill: #f5f3f0; }
-        .banner-text-main { fill: #1a1204; }
-        .banner-text-sub { fill: #d84240; }
-        .banner-accent { stroke: #8a6a35; }
-        .banner-deco { fill: #8a6a35; opacity: 0.15; }
+        .bg { fill: #0d1117; }
+        .title { fill: #ff4500; }
+        .subtitle { fill: #8b949e; }
+        .accent { stroke: #ff4500; }
       }
     </style>
-    <pattern id="seaPattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M0,20 Q10,15 20,20 T40,20" class="banner-accent" stroke-width="0.8" fill="none"/>
-    </pattern>
-  </defs>
-
-  <!-- Background -->
-  <rect width="1200" height="280" class="banner-bg"/>
-  
-  <!-- Decorative waves bottom -->
-  <rect y="240" width="1200" height="40" fill="url(#seaPattern)"/>
-  
-  <!-- Left ornament (anchor) -->
-  <g transform="translate(60, 90)">
-    <circle cx="0" cy="0" r="22" class="banner-deco" stroke="none"/>
-    <text x="0" y="8" font-size="32" text-anchor="middle" class="banner-text-main">⚓</text>
-  </g>
-
-  <!-- Main title -->
-  <text x="600" y="80" font-size="56" font-weight="bold" text-anchor="middle" class="banner-text-main" font-family="'Courier New', monospace" letter-spacing="2">
-    DEAD MAN'S CIPHER
-  </text>
-
-  <!-- Subtitle -->
-  <text x="600" y="130" font-size="20" text-anchor="middle" class="banner-text-sub" font-family="'Courier New', monospace" letter-spacing="1">
-    ✦ A Cryptographer's Toolkit for the Modern Sailor ✦
-  </text>
-
-  <!-- Description line -->
-  <text x="600" y="165" font-size="16" text-anchor="middle" class="banner-text-main" font-family="serif" opacity="0.8">
-    100% Local. Zero Dependencies. Real Cryptography.
-  </text>
-
-  <!-- Right ornament (nautical wheel) -->
-  <g transform="translate(1140, 90)">
-    <circle cx="0" cy="0" r="22" class="banner-deco" stroke="none"/>
-    <text x="0" y="10" font-size="28" text-anchor="middle" class="banner-text-main">☠</text>
-  </g>
-
-  <!-- Decorative border lines -->
-  <line x1="140" y1="200" x2="1060" y2="200" class="banner-accent" stroke-width="1" opacity="0.6"/>
-</svg>
+    
+    <rect width="800" height="200" class="bg" rx="10" />
+    <line x1="60" y1="30" x2="740" y2="30" class="accent" />
+    <line x1="60" y1="170" x2="740" y2="170" class="accent" />
+    
+    <text x="400" y="85" text-anchor="middle" class="title">⚓ DEAD MAN'S CIPHER ☠</text>
+    <text x="400" y="135" text-anchor="middle" class="subtitle">100% LOCAL • ZERO DEPENDENCIES • REAL CRYPTOGRAPHY</text>
+  </svg>
+</p>
 
 ---
 
@@ -261,7 +226,7 @@ A six-step voyage demonstrating encryption and cryptographic integrity:
 ```
 1. ✒ WRITE        → Captain writes a message
    ↓
-2. 🔒 LOCK        → Encrypt with Caesar cipher (Caesar shift key)
+2. 🔒 LOCK        → Encrypt with AES-GCM
    ↓
 3. 🕯 WAX         → Compute SHA-256 hash of ciphertext
    ↓
