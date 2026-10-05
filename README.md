@@ -1,71 +1,123 @@
+<div align="center">
+
 # ☠ DEAD MAN'S CIPHER
 
-> *A sailor's secret-keeping toolkit — scramble words, cork notes inside photographs, fingerprint cargo with wax, and talk ship-to-ship in blink-code.*
+### *A Sailor's Secret-Keeping Toolkit*
 
-**Every tool runs 100% aboard yer own vessel.** No accounts. No servers. No payloads leave the ship.
+![Cipher Badge](https://img.shields.io/badge/Type-Cryptography-Gold?style=for-the-badge&labelColor=%23000000&color=%23c9a961)
+![Stack Badge](https://img.shields.io/badge/Stack-HTML%2FCSS%2FJS-Gold?style=for-the-badge&labelColor=%23000000&color=%234de3c2)
+![Privacy Badge](https://img.shields.io/badge/Privacy-100%25%20Local-Gold?style=for-the-badge&labelColor=%23000000&color=%23e0524a)
 
 ```
-⚓ Welcome aboard. What ye write here, stays here.
+⚓ Every tool runs aboard yer own vessel. No accounts. No servers. 
+   No payloads leave the ship. What ye write here, stays here.
 ```
 
 ---
 
+</div>
+
 ## 🗺️ What Is This, Sailor?
 
-A multi-page web application dressed as an 18th-century captain's desk. Behind the aged parchment and brass lamps sits **real cryptography** — the kind that actual sailors and spies would recognise: Caesar shifts, Vigenère keywords, SHA-256 fingerprints, Morse code, and LSB steganography.
+A **multi-page web application dressed as an 18th-century captain's desk**, where real cryptography hides behind aged parchment and brass lamps. No frameworks. No dependencies. No secrets leave your machine.
 
 Learn a cipher in ten seconds. Teach it to a mate. Send them a scrambled signal they can only read with the key you both share.
+
+<div align="center">
+
+**[⚓ Set Sail →](#-the-fleet--five-pages)** • **[📦 Get Started →](#-how-to-board)** • **[🔐 Crypto Details →](#-whats-under-the-hood--real-crypto)**
+
+</div>
 
 ---
 
 ## 🏴‍☠️ The Fleet — Five Pages
 
-| ⚓ Port | Page | What She Does |
+| ⚓ Port | Page | Functionality |
 |---|---|---|
-| **The Harbor** | `index.html` | Home deck. Live compass, ship's clock, captain's logbook (saved locally), sea ambience. |
-| **Secret Signals** | `cipher.html` | Scramble text with a **shift** (Caesar) or a **keyword** (Vigenère). Brute-force "Spy all keys" reveals every possible reading at once. |
-| **Message in a Bottle** | `stego.html` | Hide a secret note invisibly inside any photo's pixels. Pull it back out later. |
-| **Wax Seal** | `seal.html` | Follow one message the full voyage: write → lock → wax → sail → verify → open. Proves a chest arrived **unbroken**. |
-| **Signal Lamp** | `trials.html` | Turn words into Morse blink-code and flash the brass lantern. Read incoming blink-code back to words. |
+| **The Harbor** | `index.html` | Home deck with live compass, ship's clock, captain's logbook (saved locally), and sea ambience. |
+| **Secret Signals** | `cipher.html` | Scramble text with **Caesar shift** or **Vigenère keyword**. Includes "Spy all keys" to see every possible reading. |
+| **Message in a Bottle** | `stego.html` | Hide secret notes invisibly inside any photo using LSB steganography. Extract them later. |
+| **Wax Seal** | `seal.html` | Encrypt a message, fingerprint with SHA-256, send across sea, verify integrity, and decrypt—proves cargo arrived unbroken. |
+| **Signal Lamp** | `trials.html` | Convert text to Morse code blink-patterns. Flash the brass lantern. Read incoming signals back to words. |
 
 ---
 
 ## 🔧 The Tools — Detail by Detail
 
-### 🚩 I. Flag Code (Caesar Shift) — `cipher.html`
-Slide every letter forward by a number the two of ye agreed on. Spaces, numbers and marks sail through untouched.
-- **Key:** a number from 1 to 25 (default `3`)
-- **Scramble** — slide forward · **Read** — slide back
-- **🔭 Spy all keys** — prints all 25 possible readings at once, so you can *see* why a simple shift is weak
+### 🚩 **I. Flag Code (Caesar Shift)**
+Slide every letter forward by an agreed number. Spaces and numbers sail through untouched.
 
-### 🗝 II. Captain's Keyword (Vigenère) — `cipher.html`
+- **Key:** Number from 1–25 (default: `3`)
+- **Scramble** → slide forward · **Read** → slide back
+- **🔭 Spy all keys:** Print all 25 possible readings so you see why simple shifts are weak
+
+```
+Plain:  ATTACK AT DAWN
+Key:    3
+Cipher: DWWDFN DW GDZQ
+```
+
+---
+
+### 🗝 **II. Captain's Keyword (Vigenère)**
 Each letter shifts by a *different* amount taken from your keyword, repeating over the message.
-- **Key:** letters only (e.g. `RUM`, `TORTUGA`)
-- The same plaintext letter scrambles differently each time — letter-counting spies fail here
 
-### 🍾 III. Message in a Bottle (LSB Steganography) — `stego.html`
-Hide a note in the *last bit* of each pixel's red, green and blue values. A 1-step colour change is invisible to the eye, but the deck can read it back.
-- **Hide:** pick any photo → type your note → press **Hide in picture** → **Download PNG**
-- **Reveal:** upload that PNG → **Pull out the note**
-- ⚠️ **Always share the PNG.** JPG re-compression squashes pixels and washes the note away.
-- The first 32 hidden bits store the note length, so the tool knows exactly where the message ends.
+- **Key:** Letters only (e.g., `RUM`, `TORTUGA`)
+- The same plaintext letter scrambles differently each time—letter-counting spies fail here
+- Much stronger than Caesar
 
-### 🕯 IV. Wax Seal (Encryption + Integrity Voyage) — `seal.html`
-The full six-port voyage of one message:
-1. **✒ Write** — the captain's orders
-2. **🔒 Lock** — encrypt with the key number (Caesar)
-3. **🕯 Wax** — SHA-256 fingerprint of the locked chest
-4. **🌊 Sail** — send the chest *and* its fingerprint across the sea
-5. **⚖ Verify** — receiver re-fingerprints and compares
-6. **📖 Open** — only if fingerprints match, unlock the message
+```
+Message:  HELLOWORLD
+Keyword:  RUMRUMRUMR
+Cipher:   YQPCOVNEWL
+```
 
-Tick **⛈ Stormy seas** to let a storm nick one letter mid-voyage — watch the wax catch the tampering and the receiver refuse to open a broken seal.
+---
 
-### 💡 V. Signal Lamp (Morse Code) — `trials.html`
-Every letter is a fixed pattern of short and long flashes. Type `SOS`, watch the lamp blink `··· −−− ···`.
-- **To blink-code** — words → dots & dashes
-- **Read it back** — dots & dashes → words
-- **🔦 Flash the lamp** — plays the actual rhythm on the brass lantern
+### 🍾 **III. Message in a Bottle (LSB Steganography)**
+Hide a note in the *last bit* of each pixel's red, green, and blue values. A 1-step color change is invisible to the eye.
+
+- **Hide:** Pick any photo → type your note → **Hide in picture** → **Download PNG**
+- **Reveal:** Upload that PNG → **Pull out the note**
+- ⚠️ **Always share as PNG.** JPG re-compression destroys the hidden message.
+- The first 32 hidden bits store the message length.
+
+---
+
+### 🕯 **IV. Wax Seal (Encryption + Integrity Voyage)**
+A six-port voyage of one message:
+
+```
+1. ✒ WRITE      → Captain's orders
+   ↓
+2. 🔒 LOCK      → Encrypt with key (Caesar)
+   ↓
+3. 🕯 WAX       → SHA-256 fingerprint of the locked chest
+   ↓
+4. 🌊 SAIL      → Send chest & fingerprint across the sea
+   ↓
+5. ⚖ VERIFY    → Receiver re-fingerprints and compares
+   ↓
+6. 📖 OPEN      → Only if fingerprints match, unlock
+```
+
+Tick **⛈ Stormy seas** to let a storm nick one letter mid-voyage—watch the wax catch the tampering.
+
+---
+
+### 💡 **V. Signal Lamp (Morse Code)**
+Every letter is a fixed pattern of short (dot) and long (dash) flashes.
+
+- **To blink-code:** Words → `···  −−−  ···`
+- **Read it back:** Dots & dashes → Words
+- **🔦 Flash the lamp:** Play the rhythm on the brass lantern
+
+```
+S = ···
+O = −−−
+S = ···
+```
 
 ---
 
@@ -74,12 +126,10 @@ Every letter is a fixed pattern of short and long flashes. Type `SOS`, watch the
 ### The Short Voyage (just look at it)
 1. Download the folder
 2. Open `index.html` in any modern browser
-3. Sail.
-
-That's it. **No build step, no `npm install`, no server required.**
+3. **Sail.** That's it—no build step, no `npm install`, no server.
 
 ### The Full Voyage (local dev server)
-Some browsers restrict `crypto.subtle` on `file://` URLs. If the Wax Seal or Bottle pages act strange, serve the folder over a simple local server:
+Some browsers restrict `crypto.subtle` on `file://` URLs. If Wax Seal or Bottle act strange, serve over a local server:
 
 ```bash
 # Python 3
@@ -94,7 +144,7 @@ php -S localhost:8080
 
 Then visit **http://localhost:8080**
 
-> ⚠️ On `file://`, SHA-256 and image processing may be blocked by yer browser's security. A local server fixes this.
+> ⚠️ On `file://`, SHA-256 and image processing may be blocked. A local server fixes this.
 
 ---
 
@@ -102,25 +152,25 @@ Then visit **http://localhost:8080**
 
 ```
 dead-mans-cipher/
-├── index.html        ☠  The Harbor (home)
-├── cipher.html       🚩  Secret Signals (Caesar + Vigenère)
-├── stego.html        🍾  Message in a Bottle (LSB stego)
-├── seal.html         🕯  Wax Seal (encrypt + verify voyage)
-├── trials.html       💡  Signal Lamp (Morse)
-├── crypto.js         🔐  Shared crypto helpers (Web Crypto API)
+├── index.html              ☠  The Harbor (home)
+├── cipher.html             🚩  Secret Signals (Caesar + Vigenère)
+├── stego.html              🍾  Message in a Bottle (LSB stego)
+├── seal.html               🕯  Wax Seal (encrypt + verify)
+├── trials.html             💡  Signal Lamp (Morse)
+├── crypto.js               🔐  Shared crypto helpers
 ├── js/
-│   └── shell.js      ⚙  Shared shell (nav, particles, toasts, transitions)
+│   └── shell.js            ⚙  Navigation, animations, UI
 └── css/
-    └── styles.css    🎨  The whole pirate design system
+    └── styles.css          🎨  Full pirate design system
 ```
 
-The shared **`js/shell.js`** is loaded on every page and handles:
+**`js/shell.js`** is loaded on every page and provides:
 - Top navigation with sliding gold pill
-- Page enter/leave transitions
+- Page transitions
 - Background stars canvas, drifting blobs, cursor glow
 - Scroll reveals + counter animations
-- Toast notifications & copy-to-clipboard helpers
-- Card tilt on hover
+- Toast notifications & copy-to-clipboard
+- Card hover tilt
 - Injected top rule + tall-ship silhouette
 
 ---
@@ -129,36 +179,43 @@ The shared **`js/shell.js`** is loaded on every page and handles:
 
 `crypto.js` exposes a `CipherWorks` helper built on the browser's native **[Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API)**:
 
-| Function | Backing Algorithm |
+| Function | Algorithm |
 |---|---|
-| `encryptMsg` / `decryptPkg` | **AES-GCM 256** with **PBKDF2** key derivation (160,000 iterations, SHA-256) |
+| `encryptMsg` / `decryptPkg` | **AES-GCM 256** + **PBKDF2** (160,000 iterations, SHA-256) |
 | `sha256` | **SHA-256** digest |
 | `hmac` | **HMAC-SHA-256** |
-| `zwEncode` / `zwDecode` | Zero-width character steganography (ZWSP / ZWNJ / ZWJ / ZWNBSP) |
-| `embed` / `strip` | Insert / remove hidden zero-width strings in carrier text |
+| `zwEncode` / `zwDecode` | Zero-width character steganography |
+| `embed` / `strip` | Insert / remove hidden zero-width strings |
 
-The `seal.html` voyage uses **SHA-256** directly to fingerprint the locked chest — the same idea as an HMAC, acted out on screen so a beginner can see what "integrity" means.
+The **Wax Seal** uses **SHA-256** directly to fingerprint—the same idea as an HMAC, acted out on screen so beginners see what "integrity" means.
 
 ---
 
 ## 🎨 The Design Deck
 
-The whole fleet shares one design system (`css/styles.css`):
+The whole fleet shares one cohesive design system (`css/styles.css`):
 
-- **Palette:** abyss black, aged gold `#c9a961`, sea phosphor `#4de3c2`, wax-seal blood `#e0524a`, parchment `#f3e6c8`
-- **Type:** *Pirata One* for headlines, *Cinzel* for headings, *Cormorant Garamond* for prose, *IM Fell English* for italic flourishes, *JetBrains Mono* for cipher output
-- **Materials:** dark-wood frames with brass nails, parchment result papers, rope dividers, wax medallions, hanging lanterns, ship's compasses
-- **Motion:** floating ships, sweeping radar, rocking bottles, flickering lanterns, drifting tall-ship silhouette behind every page
-- **Respects `prefers-reduced-motion`** — animations collapse for those who ask
+| Element | Details |
+|---|---|
+| **Palette** | Abyss black, aged gold `#c9a961`, sea phosphor `#4de3c2`, wax-seal blood `#e0524a`, parchment `#f3e6c8` |
+| **Typography** | Pirata One (headlines), Cinzel (headings), Cormorant Garamond (prose), IM Fell English (flourishes), JetBrains Mono (code) |
+| **Materials** | Dark-wood frames, parchment result papers, rope dividers, wax medallions, hanging lanterns, ship compasses |
+| **Motion** | Floating ships, sweeping radar, rocking bottles, flickering lanterns, drifting tall-ship silhouette |
+| **Accessibility** | Respects `prefers-reduced-motion`—animations collapse for those who need it |
 
 ---
 
 ## 🧭 Sailor's Orders (How to Use It, Honestly)
 
-1. **Share the key out-of-band.** Scramble a message, then tell yer mate the number or keyword *in person*, over the phone, or by carrier pigeon. Never send the key inside the same message.
-2. **Flag Code (Caesar) is easy to break.** It's for learning and for fun. Use the Captain's Keyword when you want a bit more muscle.
+1. **Share the key out-of-band.** Tell your mate the number or keyword *in person*, over the phone, or by carrier pigeon. Never send the key inside the same message.
+
+2. **Flag Code (Caesar) is easy to break.** It's for learning and for fun. Use the Captain's Keyword when you want real strength.
+
 3. **Wax Seal shows tampering, not secrecy.** The two work together: encrypt *and* fingerprint.
-4. **PNG only, for bottles.** JPG re-compresses pixels and eats the hidden note. Always share the PNG.
+
+4. **PNG only, for bottles.** JPG re-compresses pixels and destroys the hidden note. Always share the PNG.
+
+5. **No key → no reading.** If you lose the key, the message is gone forever. This is a *feature*.
 
 ---
 
@@ -166,39 +223,145 @@ The whole fleet shares one design system (`css/styles.css`):
 
 A suggested learning path:
 
-1. **Tortuga** — Start at **Secret Signals**. Scramble `"Attack at dawn"` with key 3. Read it back.
-2. **Open Water** — Visit the **Signal Lamp**. Flash `SOS`. Read it back.
-3. **Isla Cifrada** — Sail the full **Wax Seal** voyage. Tick **Stormy seas** and watch a broken seal get refused.
-4. **Return Home** — Bring a photo to **Message in a Bottle** and hide a note inside it.
+```
+TORTUGA
+  ↓
+1. Visit Secret Signals
+   → Scramble "ATTACK AT DAWN" with key 3
+   → Read it back
+   
+OPEN WATER
+  ↓
+2. Visit Signal Lamp
+   → Flash "SOS" in blink-code
+   → Read the pattern back
+   
+ISLA CIFRADA
+  ↓
+3. Sail the full Wax Seal voyage
+   → Write a message
+   → Encrypt it
+   → Fingerprint with SHA-256
+   → Tick "Stormy seas" (simulate tampering)
+   → Watch the wax catch the break
+   
+RETURN HOME
+  ↓
+4. Bring a photo to Message in a Bottle
+   → Hide a secret note inside
+   → Download as PNG
+   → Extract it later to prove it survived
+```
 
 ---
 
 ## 🛠 Tech Stack
 
-- **HTML5 + CSS3 + vanilla JavaScript** — no frameworks, no bundlers, no dependencies
-- **Web Crypto API** — real AES-GCM, PBKDF2, SHA-256, HMAC
-- **Canvas API** — for LSB steganography
-- **Web Audio API** — synthesised sea ambience + foghorn
-- **localStorage** — the captain's logbook
+- **HTML5 + CSS3 + Vanilla JavaScript** — no frameworks, no bundlers, no dependencies
+- **Web Crypto API** — real AES-GCM 256, PBKDF2, SHA-256, HMAC
+- **Canvas API** — for LSB steganography & visual effects
+- **Web Audio API** — synthesized sea ambience + foghorn
+- **localStorage** — the captain's logbook (saved on your machine)
 - **Google Fonts** — Cinzel, Cormorant Garamond, IM Fell English, Outfit, JetBrains Mono, Pirata One
 
-Works in every modern browser. Nothing is ever sent to a server.
+**Works in every modern browser. Nothing is ever sent to a server.**
 
 ---
 
 ## 🏴 Privacy Promise
 
-> **NO PAYLOADS LEAVE THIS VESSEL.**
+```
+╔═══════════════════════════════════════════╗
+║   NO PAYLOADS LEAVE THIS VESSEL          ║
+╚═══════════════════════════════════════════╝
+```
 
-Every operation — cipher, ciphertext, image, fingerprint, logbook entry — runs entirely in yer browser tab. There is no backend, no analytics, no tracking, no telemetry. Close the tab and every trace is gone.
+Every operation—cipher, ciphertext, image, fingerprint, logbook entry—runs entirely in your browser tab.
+
+- ✅ No backend
+- ✅ No analytics  
+- ✅ No tracking
+- ✅ No telemetry
+- ✅ No logs
+
+Close the tab and everything is gone. Not even *we* can see what you write.
+
+---
+
+## 🎓 Educational Value
+
+This toolkit teaches:
+
+- **Caesar Cipher** — the simplest substitution cipher (easy to break, fun to learn)
+- **Vigenère Cipher** — polyalphabetic substitution (much stronger, still human-doable)
+- **Steganography** — hiding data in plain sight (LSB in images)
+- **Cryptographic Integrity** — SHA-256 fingerprinting (prove a message arrived unbroken)
+- **Morse Code** — classic long-range signaling (dots, dashes, rhythm)
+- **Web Crypto API** — how modern browsers do real encryption (AES-GCM, PBKDF2)
+
+Perfect for:
+- Teaching cryptography concepts
+- Understanding how ciphers *actually* work (not just black-box tools)
+- Learning by doing—immediate, interactive feedback
+- Historical context—18th-century sailor's methods + modern crypto
+
+---
+
+## 📦 Installation & Deployment
+
+### Run Locally (No Build Required)
+```bash
+git clone https://github.com/CodeWithAdarsh007/Dead-Mans-Cipher.git
+cd Dead-Mans-Cipher
+# Option 1: Just open index.html in your browser
+open index.html
+
+# Option 2: Serve over local network (recommended for crypto.subtle)
+python -m http.server 8080
+# Visit http://localhost:8080
+```
+
+### Deploy to GitHub Pages
+1. Go to **Settings** → **Pages**
+2. Set source to `main` branch, root folder
+3. Save. Your site is live at `https://yourusername.github.io/Dead-Mans-Cipher`
+
+### Deploy Anywhere
+Copy the entire folder to any static host (Vercel, Netlify, GitHub Pages, etc.). No build or server needed.
+
+---
+
+## 🤝 Contributing
+
+Found a bug? Have a feature idea? Want to add a new cipher?
+
+1. Fork the repo
+2. Create a branch: `git checkout -b feature/your-feature`
+3. Commit your changes: `git commit -m "Add your feature"`
+4. Push and open a Pull Request
+
+All contributions are welcome. Please keep the 18th-century sailor aesthetic intact. 😉
 
 ---
 
 ## 📜 License
 
-Do as ye will with it, sailor. Fork it, teach with it, dress it in yer own colours. A nod to the original crew is appreciated but not demanded.
+Do as ye will with it, sailor. Fork it. Teach with it. Dress it in yer own colours. A nod to the original crew is appreciated but not demanded.
+
+**MIT License** — See LICENSE file for details.
 
 ---
+
+## 🔗 Quick Links
+
+- 🎮 **[Try the Live App](https://codewith​adarsh007.github.io/Dead-Mans-Cipher)** *(Update with your deployed URL)*
+- 📖 **[Read the Full Crypto Docs](CRYPTO.md)** *(Create this for deeper dives)*
+- 🐛 **[Report a Bug](https://github.com/CodeWithAdarsh007/Dead-Mans-Cipher/issues)**
+- 💡 **[Request a Feature](https://github.com/CodeWithAdarsh007/Dead-Mans-Cipher/issues)**
+
+---
+
+<div align="center">
 
 ```
                     ⚓
@@ -209,8 +372,18 @@ Do as ye will with it, sailor. Fork it, teach with it, dress it in yer own colou
                     |
                     |
         ~~~~~~  DEAD MAN'S CIPHER  ~~~~~~
-        Scramble. Cork. Seal. Flash.
+        Scramble · Cork · Seal · Flash
               Fait accompli.
 ```
 
-**Fair winds and scrambled signals.** ☠
+### **Fair winds and scrambled signals.** ☠
+
+Built with 🖤 by sailors, for sailors.  
+*All secrets stay at sea.*
+
+---
+
+![Stars](https://img.shields.io/github/stars/CodeWithAdarsh007/Dead-Mans-Cipher?style=social)
+![Forks](https://img.shields.io/github/forks/CodeWithAdarsh007/Dead-Mans-Cipher?style=social)
+
+</div>
